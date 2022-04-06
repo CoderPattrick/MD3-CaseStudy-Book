@@ -33,14 +33,15 @@ public class BookServlet extends HttpServlet {
                 action = "";
             }
             switch (action) {
-//                case "getAllAuthor":
-//                    showListAuthorForm(req, resp);
-//                    break;
-//                case "getAllCategory":
-//                    showListCategoryForm(req, resp);
-//                    break;
+
+                case "getAllCategory":
+                    showListCategoryForm(req, resp);
+                    break;
                 case "deleteCategory":
                     deleteCategory(req,resp);
+                    break;
+                case "showCreateCateForm":
+                    showCreateCateForm(req,resp);
                     break;
                 default:
                     break;
@@ -52,6 +53,11 @@ public class BookServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showCreateCateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException  {
+        RequestDispatcher rD = req.getRequestDispatcher("createCategory.jsp");
+        rD.forward(req,resp);
     }
 
 
@@ -80,21 +86,14 @@ public class BookServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-//
-//    private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-//        RequestDispatcher rD = req.getRequestDispatcher("listAuthor.jsp");
-//        ArrayList<Author> list = dao.getAllAuthor();
-//        req.setAttribute("listAuthor", list);
-//        rD.forward(req, resp);
-//
-//    }
-//
-//    private void showListCategoryForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-//        RequestDispatcher rD = req.getRequestDispatcher("listCategory.jsp");
-//        ArrayList<Category> list = dao.getAllCategory();
-//        req.setAttribute("listCategory", list);
-//        rD.forward(req, resp);
-//    }
+
+
+    private void showListCategoryForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        RequestDispatcher rD = req.getRequestDispatcher("listCategory.jsp");
+        ArrayList<Category> list = categoryDAO.getAll();
+        req.setAttribute("listCategory", list);
+        rD.forward(req, resp);
+    }
 
     private void deleteCategory(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException{

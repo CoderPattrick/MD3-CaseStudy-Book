@@ -1,7 +1,6 @@
 package dao;
 
 import model.Author;
-import model.Category;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -45,7 +45,7 @@ public class CategoryDAO implements DAO<Category> {
                 System.out.println(preparedStatement);
                 preparedStatement.executeUpdate();
             }
-        return false;
+            return false;
     }
 
     @Override
