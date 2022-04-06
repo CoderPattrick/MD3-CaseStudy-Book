@@ -42,6 +42,9 @@ public class BookServlet extends HttpServlet {
                 case "deleteBookById":
                     showDeleteBookForm(req,resp);
                     break;
+                case "deleteAuthorById":
+                    showDeleteAuthorForm(req,resp);
+                    break;
                 default:
                     break;
             }
@@ -53,9 +56,6 @@ public class BookServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
-
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
@@ -70,6 +70,9 @@ public class BookServlet extends HttpServlet {
                     break;
                 case "deleteBookById":
                     deleteBookById(req,resp);
+                    break;
+                case "deleteAuthorById":
+                    deleteAuthorById(req,resp);
                     break;
             }
         }catch (ServletException e) {
@@ -118,6 +121,13 @@ public class BookServlet extends HttpServlet {
         int id = Integer.parseInt(result);
         bookDAO.deleteRecord(id);
     }
-
-
+    private void deleteAuthorById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        String result =req.getParameter("id");
+        int id = Integer.parseInt(result);
+        authorDAO.deleteRecord(id);
+    }
+    private void showDeleteAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        RequestDispatcher rD = req.getRequestDispatcher("deleteAuthor.jsp");
+        rD.forward(req,resp);
+    }
 }

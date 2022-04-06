@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class AuthorDAO implements DAO<Author>{
     public static final String getAllAuthorSQL = "select * from tacgia;";
     public static final String getAuthorByIdSQL = "select * from tacgia where id = ?;";
+    public static final String deleteAuthorByIdSQL = "delete from tacgia where id = ?;";
 
     @Override
     public ArrayList<Author> getAll() throws SQLException {
@@ -61,6 +62,8 @@ public class AuthorDAO implements DAO<Author>{
 
     @Override
     public boolean deleteRecord(int id) throws SQLException {
-        return false;
+        PreparedStatement pS = connection.prepareStatement(deleteAuthorByIdSQL);
+        pS.setInt(1,id);
+        return pS.execute();
     }
 }
