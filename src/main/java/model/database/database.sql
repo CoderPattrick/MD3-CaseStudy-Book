@@ -1,4 +1,5 @@
 CREATE DATABASE CS;
+
 use CS;
 CREATE TABLE theloai(
                         id int auto_increment PRIMARY KEY ,
