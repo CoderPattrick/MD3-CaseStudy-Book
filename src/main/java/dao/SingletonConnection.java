@@ -10,9 +10,6 @@ public class SingletonConnection {
     private static String user = "root";
     private static String pass = "123456";
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        getConnection();
-    }
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         if(connection==null){
@@ -21,5 +18,4 @@ public class SingletonConnection {
             System.out.println("success!");
         }
         return connection;
-    }
-}
+    }}
