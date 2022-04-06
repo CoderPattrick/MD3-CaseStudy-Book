@@ -64,4 +64,9 @@ CREATE TABLE chiTietGioHang(
                                FOREIGN KEY (id_giohang)references giohang(id),
                                FOREIGN KEY (id_sach)references sach(id)
 );
+<<<<<<< HEAD:src/main/java/model/database/database.sql
 # drop database CS;
+=======
+
+
+>>>>>>> a1e6092d0ccdcfbf87a8b4ba66e82a4e3cc394f6:src/main/java/model/database.sql
