@@ -25,6 +25,7 @@ public class BookDAO implements DAO<Book> {
         ) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String nameBook = resultSet.getString("ten");
                 int publishYear = resultSet.getInt("namXuatBan");
                 int reprint = resultSet.getInt("taiBanLanThu");
@@ -39,8 +40,8 @@ public class BookDAO implements DAO<Book> {
                 double price = resultSet.getDouble("giaSach");
                 int soldQuantity = resultSet.getInt("soLuongDaBan");
                 int inStock = resultSet.getInt("sachTonKho");
-                ArrayList<Author> authors = authorDAO.getAll();
-                ArrayList<Category> categories = categoryDAO.getAll();
+                ArrayList<Author> authors = authorDAO.findAllByBookId(id);
+                ArrayList<Category> categories = categoryDAO.findAllByBookId(id);
                 list.add(new Book(IBSNCode, nameBook, categories, authors, publishYear, reprint, summary, publisher, publishLicense, avatarB, viewCount, isRecommended, isBestSeller, price, soldQuantity, inStock));
             }
         }
@@ -69,8 +70,8 @@ public class BookDAO implements DAO<Book> {
             double price = resultSet.getDouble("giaSach");
             int soldQuantity = resultSet.getInt("soLuongDaBan");
             int inStock = resultSet.getInt("sachTonKho");
-            ArrayList<Author> authors = AuthorDAO.findAllByBookId(id);
-            ArrayList<Category> categories = CategoryDAO.findAllByBookId(id);
+            ArrayList<Author> authors = authorDAO.findAllByBookId(id);
+            ArrayList<Category> categories = categoryDAO.findAllByBookId(id);
             newBook = new Book(id, IBSNCode, nameBook, categories, authors, publishYear, reprint, summary, publisher, publishLicense, avatarB, viewCount, isRecommended, isBestSeller, price, soldQuantity, inStock);
         }
         return newBook;
@@ -83,6 +84,7 @@ public class BookDAO implements DAO<Book> {
 
     @Override
     public boolean editRecord(Book object) throws SQLException {
+
         return false;
     }
 
