@@ -1,6 +1,7 @@
 package controller;
 
-import dao.BookDAO;
+import dao.AuthorDAO;
+import dao.CategoryDAO;
 import model.Author;
 import model.Category;
 
@@ -16,7 +17,8 @@ import java.util.ArrayList;
 
 @WebServlet(name = "BookServlet" , value = "/BookServlet")
 public class BookServlet extends HttpServlet {
-    BookDAO dao = new BookDAO();
+    AuthorDAO authorDAO = new AuthorDAO();
+    CategoryDAO categoryDAO = new CategoryDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)  {
@@ -60,14 +62,14 @@ public class BookServlet extends HttpServlet {
 
     private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         RequestDispatcher rD = req.getRequestDispatcher("listAuthor.jsp");
-            ArrayList<Author> list = dao.getAllAuthor();
+            ArrayList<Author> list = authorDAO.getAll();
             req.setAttribute("listAuthor",list);
             rD.forward(req,resp);
 
     }
     private void showListCategoryForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         RequestDispatcher rD = req.getRequestDispatcher("listCategory.jsp");
-            ArrayList<Category> list = dao.getAllCategory();
+            ArrayList<Category> list = categoryDAO.getAll();
             req.setAttribute("listCategory",list);
             rD.forward(req,resp);
     }
