@@ -93,11 +93,12 @@ public class BookServlet extends HttpServlet {
     private void getAuthorById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         RequestDispatcher rD = req.getRequestDispatcher("authorById.jsp");
         String result =req.getParameter("id");
-        int id = Integer.getInteger(result);
+        int id = Integer.parseInt(result);
         Author author = authorDAO.getById(id);
         req.setAttribute("author",author);
         rD.forward(req,resp);
     }
+
 
 
 

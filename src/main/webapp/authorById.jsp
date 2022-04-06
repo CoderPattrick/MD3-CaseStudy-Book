@@ -14,7 +14,7 @@
 <body>
 <h2>Author</h2>
 <form method="post">
-    Author ID: <input type="text" id="id" name="id" size="50"/>
+    Author ID: <input type="number" id="id" name="id" size="50"/>
     <input type="submit" value="Search"/>
 </form>
 <table border="1">
