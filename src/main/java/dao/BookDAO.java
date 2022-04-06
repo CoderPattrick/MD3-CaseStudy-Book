@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class BookDAO implements DAO<Book> {
 
-    public static final String DisplayBookByidCatogory = "SELECT s.id as idB, s.ten as tenB , namXuatBan,taiBanLanThu,maISBN,moTa,NXB,GPXB,s.avatar as avatarB , view,sachDeCu,sachHot,giaSach,soLuongDaBan,sachTonKho,idTheLoai,t.ten as tenC , idTacGia,t2.ten as tenA , namSinh ,namMat ,soTacPham,quocTich,linkWiki,t2.avatar as avatarA FROM sach s join sach_theloai st on s.id = st.idSach  join theloai t on st.idTheLoai = t.id join sach_tacgia st2 on s.id = st2.idSach join tacgia t2 on st2.idTacGia = t2.id where t.id= ?;";
     public static final String Get_By_ID = "SELECT *FROM sach where id=? ;";
 
     @Override
