@@ -64,3 +64,4 @@ CREATE TABLE chiTietGioHang(
                                FOREIGN KEY (id_giohang)references giohang(id),
                                FOREIGN KEY (id_sach)references sach(id)
 );
+# drop database CS;
