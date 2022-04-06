@@ -127,3 +127,4 @@ values ('1','2022-05-04 16:21:00',2),
 insert into chitietgiohang(id_giohang, id_sach, soLuongSach)
 values (1,1,20),
        (1,2,17);
+
