@@ -9,8 +9,6 @@ public class SingletonConnection {
     private static String url = "jdbc:mysql://localhost:3306/cs";
     private static String user = "root";
     private static String pass = "123456";
-
-
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         if(connection==null){
             Class.forName("com.mysql.jdbc.Driver");
@@ -20,3 +18,4 @@ public class SingletonConnection {
         return connection;
     }
 }
+
