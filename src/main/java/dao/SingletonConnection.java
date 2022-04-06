@@ -8,22 +8,14 @@ public class SingletonConnection {
     public static Connection connection = null;
     private static String url = "jdbc:mysql://localhost:3306/cs";
     private static String user = "root";
-    private static String pass = "Journalist251195";
-
-//    public static void main(String[] args) {
-//            getConnection();
-//    }
-    public static Connection getConnection() {
+    private static String pass = "123456";
+    public static Connection getConnection() throws ClassNotFoundException, SQLException {
         if(connection==null){
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection(url,user,pass);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(url,user,pass);
+            System.out.println("success!");
         }
         return connection;
     }
 }
+
