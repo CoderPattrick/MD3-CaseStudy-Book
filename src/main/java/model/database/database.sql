@@ -12,7 +12,7 @@ CREATE TABLE tacgia(
                        soTacPham int not null  default 0,
                        quocTich nvarchar(255) not null,
                        linkWiki varchar(255),
-                       avatar varchar(255)
+                       avatar varchar(1000)
 );
 CREATE  TABLE sach (
                        id int primary key  auto_increment,
