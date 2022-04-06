@@ -10,12 +10,10 @@ import java.util.ArrayList;
 
 public class AuthorDAO implements DAO<Author>{
     public static final String getAllAuthorSQL = "select * from tacgia;";
-<<<<<<< HEAD
     public static final String getAuthorByIdSQL = "select * from tacgia where id = ?;";
     public static final String deleteAuthorByIdSQL = "delete from tacgia where id = ?;";
-=======
     public static final String FIND_ALL_AUTHOR_BY_BOOKID = "SELECT id, ten, namSinh, namMat, soTacPham, quocTich, linkWiki, avatar FROM tacgia join sach_tacgia st on tacgia.id = st.idTacGia where st.idSach=?;";
->>>>>>> 2a970619311d698dce8da24edc4e354c8f0d6013
+
 
     @Override
     public ArrayList<Author> getAll() throws SQLException {

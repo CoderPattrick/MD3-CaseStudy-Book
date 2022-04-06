@@ -11,6 +11,12 @@
 <head>
     <title>Author</title>
 </head>
+<script language="JavaScript">
+    let checkGetBooks = false;
+    function checkGetBooks(){
+        checkGetBooks = true;
+    }
+</script>
 <body>
 <h2>Author</h2>
 <form method="post">
@@ -32,10 +38,15 @@
         <td>${author.getName()}</td>
         <td>${author.getYearOfBirth()}</td>
         <td>${author.getYearOfDeath()}</td>
-        <td><a href="" methods="">${author.getNumberOfBook()}</a></td>
+        <td><a onclick="checkGetBooks()">${author.getNumberOfBook()}</a></td>
         <td>${author.getCountry()}</td>
         <td>${author.getWikiURL()}</td>
     </tr>
 </table>
+<c:if test="${checkGetBooks}">
+    <table>
+
+    </table>
+</c:if>
 </body>
 </html>

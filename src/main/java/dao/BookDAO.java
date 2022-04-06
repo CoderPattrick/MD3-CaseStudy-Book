@@ -5,22 +5,46 @@ import model.Book;
 import model.Category;
 
 import java.sql.PreparedStatement;
-<<<<<<< HEAD
-=======
 import java.sql.ResultSet;
->>>>>>> 2a970619311d698dce8da24edc4e354c8f0d6013
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 
 public class BookDAO implements DAO<Book> {
     private static final String deleteBookByIdSQL ="delete from sach where id = ?;";
-
     public static final String Get_By_ID = "SELECT *FROM sach where id=? ;";
+    public static final String Get_All = "SELECT *FROM sach;";
+    AuthorDAO authorDAO = new AuthorDAO();
+    CategoryDAO categoryDAO = new CategoryDAO();
 
     @Override
     public ArrayList<Book> getAll() throws SQLException {
-        return null;
+        ArrayList<Book> list = new ArrayList<>();
+        try (
+                PreparedStatement statement = connection.prepareStatement(Get_All)
+        ) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String nameBook = resultSet.getString("ten");
+                int publishYear = resultSet.getInt("namXuatBan");
+                int reprint = resultSet.getInt("taiBanLanThu");
+                Long IBSNCode = resultSet.getLong("maISBN");
+                String summary = resultSet.getString("moTa");
+                String publisher = resultSet.getString("NXB");
+                String publishLicense = resultSet.getString("GPXB");
+                String avatarB = resultSet.getString("avatar");
+                int viewCount = resultSet.getInt("view");
+                boolean isRecommended = resultSet.getBoolean("sachDeCu");
+                boolean isBestSeller = resultSet.getBoolean("sachHot");
+                double price = resultSet.getDouble("giaSach");
+                int soldQuantity = resultSet.getInt("soLuongDaBan");
+                int inStock = resultSet.getInt("sachTonKho");
+                ArrayList<Author> authors = authorDAO.getAll();
+                ArrayList<Category> categories = categoryDAO.getAll();
+                list.add(new Book(IBSNCode, nameBook, categories, authors, publishYear, reprint, summary, publisher, publishLicense, avatarB, viewCount, isRecommended, isBestSeller, price, soldQuantity, inStock));
+            }
+        }
+        return list;
     }
 
     @Override

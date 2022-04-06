@@ -4,6 +4,7 @@ import dao.AuthorDAO;
 import dao.BookDAO;
 import dao.CategoryDAO;
 import model.Author;
+import model.Book;
 import model.Category;
 
 import javax.servlet.RequestDispatcher;
@@ -30,6 +31,9 @@ public class BookServlet extends HttpServlet {
                 action ="";
             }
             switch (action){
+                case "getAllBook":
+                    showListBookForm(req,resp);
+                    break;
                 case "getAllAuthor":
                     showListAuthorForm(req,resp);
                     break;
@@ -84,9 +88,10 @@ public class BookServlet extends HttpServlet {
         }
     }
 
-
-
-
+//Là người dùng tôi muốn
+// khi xem chi tiết một tác giả
+// có thể xem được
+// danh sách các tác phẩm của tác giả đó
     private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         RequestDispatcher rD = req.getRequestDispatcher("listAuthor.jsp");
             ArrayList<Author> list = authorDAO.getAll();
@@ -128,6 +133,12 @@ public class BookServlet extends HttpServlet {
     }
     private void showDeleteAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         RequestDispatcher rD = req.getRequestDispatcher("deleteAuthor.jsp");
+        rD.forward(req,resp);
+    }
+    private void showListBookForm(HttpServletRequest req, HttpServletResponse resp)  throws ServletException, IOException, SQLException {
+        RequestDispatcher rD = req.getRequestDispatcher("listBook.jsp");
+        ArrayList<Book> list = bookDAO.getAll();
+        req.setAttribute("listBook",list);
         rD.forward(req,resp);
     }
 }
