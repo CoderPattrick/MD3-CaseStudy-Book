@@ -2,11 +2,13 @@ package dao;
 
 import model.Book;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 
 public class BookDAO implements DAO<Book> {
+    private static final String deleteBookByIdSQL ="delete from sach where id = ?;";
 
     @Override
     public ArrayList<Book> getAll() throws SQLException {
@@ -17,7 +19,6 @@ public class BookDAO implements DAO<Book> {
     public Book getById(int id) throws SQLException {
         return null;
     }
-
     @Override
     public boolean insertIntoDB(Book object) throws SQLException {
         return false;
@@ -30,6 +31,8 @@ public class BookDAO implements DAO<Book> {
 
     @Override
     public boolean deleteRecord(int id) throws SQLException {
-        return false;
+        PreparedStatement pS = connection.prepareStatement(deleteBookByIdSQL);
+        pS.setInt(1,id);
+        return pS.execute();
     }
 }

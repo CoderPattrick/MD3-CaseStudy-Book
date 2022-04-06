@@ -32,7 +32,7 @@
         <td>${author.getName()}</td>
         <td>${author.getYearOfBirth()}</td>
         <td>${author.getYearOfDeath()}</td>
-        <td>${author.getNumberOfBook()}</td>
+        <td><a href="" methods="">${author.getNumberOfBook()}</a></td>
         <td>${author.getCountry()}</td>
         <td>${author.getWikiURL()}</td>
     </tr>

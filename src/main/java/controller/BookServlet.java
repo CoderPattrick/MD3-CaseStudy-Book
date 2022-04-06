@@ -1,6 +1,7 @@
 package controller;
 
 import dao.AuthorDAO;
+import dao.BookDAO;
 import dao.CategoryDAO;
 import model.Author;
 import model.Category;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class BookServlet extends HttpServlet {
     AuthorDAO authorDAO = new AuthorDAO();
     CategoryDAO categoryDAO = new CategoryDAO();
+    BookDAO bookDAO = new BookDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)  {
@@ -37,6 +39,9 @@ public class BookServlet extends HttpServlet {
                 case "getAuthorById":
                     showAuthorByIdForm(req,resp);
                     break;
+                case "deleteBookById":
+                    showDeleteBookForm(req,resp);
+                    break;
                 default:
                     break;
             }
@@ -51,6 +56,7 @@ public class BookServlet extends HttpServlet {
 
 
 
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getParameter("action");
@@ -62,6 +68,9 @@ public class BookServlet extends HttpServlet {
                 case "getAuthorById":
                     getAuthorById(req,resp);
                     break;
+                case "deleteBookById":
+                    deleteBookById(req,resp);
+                    break;
             }
         }catch (ServletException e) {
             e.printStackTrace();
@@ -71,6 +80,8 @@ public class BookServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+
 
 
     private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
@@ -98,8 +109,15 @@ public class BookServlet extends HttpServlet {
         req.setAttribute("author",author);
         rD.forward(req,resp);
     }
-
-
+    private void showDeleteBookForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        RequestDispatcher rD = req.getRequestDispatcher("deleteBook.jsp");
+        rD.forward(req,resp);
+    }
+    private void deleteBookById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        String result =req.getParameter("id");
+        int id = Integer.parseInt(result);
+        bookDAO.deleteRecord(id);
+    }
 
 
 }
