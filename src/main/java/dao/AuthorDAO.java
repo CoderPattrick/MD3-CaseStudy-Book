@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class AuthorDAO implements DAO<Author>{
     public static final String getAllAuthorSQL = "select * from tacgia;";
+    public static final String getAuthorByIdSQL = "select * from tacgia where id = ?;";
 
     @Override
     public ArrayList<Author> getAll() throws SQLException {
@@ -31,7 +32,21 @@ public class AuthorDAO implements DAO<Author>{
 
     @Override
     public Author getById(int id) throws SQLException {
-        return null;
+        Author author = new Author();
+        PreparedStatement pS = connection.prepareStatement(getAuthorByIdSQL);
+        pS.setInt(1,id);
+        ResultSet rS = pS.executeQuery();
+        while (rS.next()){
+            String name = rS.getString("ten");
+            int yearOfBirth = rS.getInt("namSinh");
+            int yearOfDeath = rS.getInt("namMat");
+            int numberOfBook = rS.getInt("soTacPham");
+            String country = rS.getString("quocTich");
+            String wikiURL = rS.getString("linkWiki");
+            String avatarURL = rS.getString("avatar");
+            author=new Author(name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL);
+        }
+        return author;
     }
 
     @Override

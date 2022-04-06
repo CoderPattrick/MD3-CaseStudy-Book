@@ -34,6 +34,9 @@ public class BookServlet extends HttpServlet {
                 case "getAllCategory":
                     showListCategoryForm(req,resp);
                     break;
+                case "getAuthorById":
+                    showAuthorByIdForm(req,resp);
+                    break;
                 default:
                     break;
             }
@@ -47,18 +50,28 @@ public class BookServlet extends HttpServlet {
     }
 
 
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getParameter("action");
-//        try{
+        try{
             if(action == null){
                 action ="";
             }
             switch (action){
-
+                case "getAuthorById":
+                    getAuthorById(req,resp);
+                    break;
             }
-//        }
+        }catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
 
     private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         RequestDispatcher rD = req.getRequestDispatcher("listAuthor.jsp");
@@ -72,6 +85,18 @@ public class BookServlet extends HttpServlet {
             ArrayList<Category> list = categoryDAO.getAll();
             req.setAttribute("listCategory",list);
             rD.forward(req,resp);
+    }
+    private void showAuthorByIdForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException  {
+        RequestDispatcher rD = req.getRequestDispatcher("authorById.jsp");
+        rD.forward(req,resp);
+    }
+    private void getAuthorById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        RequestDispatcher rD = req.getRequestDispatcher("authorById.jsp");
+        String result =req.getParameter("id");
+        int id = Integer.getInteger(result);
+        Author author = authorDAO.getById(id);
+        req.setAttribute("author",author);
+        rD.forward(req,resp);
     }
 
 
