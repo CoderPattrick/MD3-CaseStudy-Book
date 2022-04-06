@@ -12,6 +12,7 @@ public class BookDAO {
     public static Connection connection = SingletonConnection.getConnection();
     public static final String getAllAuthorSQL = "select * from tacgia;";
     public static final String getAllCategorySQL = "select * from theloai;";
+    public static final String getAuthorSQLByName = "select * from tacgia where ten = ?";
 
 
     public ArrayList<Author> getAllAuthor() throws SQLException {
@@ -46,4 +47,29 @@ public class BookDAO {
         }
     return list;
     }
+
+// Tìm kiếm tác giả theo tên
+    public Author getAuthorByName(String searchName){
+        Author author = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(getAuthorSQLByName);
+            preparedStatement.setString(1,searchName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                String name = resultSet.getString("ten");
+                int yearOfBirth = resultSet.getInt("namSinh");
+                int yearOfDeath = resultSet.getInt("namMat");
+                int numberOfBook = resultSet.getInt("soTacPham");
+                String nationality = resultSet.getString("quocTich");
+                String linkWiki = resultSet.getString("linkWiki");
+                String avatar = resultSet.getString("avatar");
+                author = new Author(name,yearOfBirth,yearOfDeath,numberOfBook,nationality,linkWiki,avatar);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return author;
+    }
+
 }
