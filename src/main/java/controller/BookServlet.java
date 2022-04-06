@@ -28,26 +28,32 @@ public class BookServlet extends HttpServlet {
                 case "getAllAuthor":
                     showListAuthorForm(req,resp);
                     break;
+                case "updateAuthorInfo":
+                    showUpdateAuthorInfoForm(req,resp);
                 default:
                     break;
             }
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ServletException | SQLException | IOException e) {
             e.printStackTrace();
         }
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getParameter("action");
-//        try{
+        try{
             if(action == null){
                 action ="";
             }
             switch (action){
+                case "updateAuthorInfo":
+                    updateAuthorInfo(req,resp);
+                    break;
+
 
             }
-//        }
+        } catch (ServletException | SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,7 +65,27 @@ public class BookServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    }
+    private void showUpdateAuthorInfoForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/edit.jsp");
+        int id = Integer.parseInt(request.getParameter("id"));
+        Author author = dao.getAuthorById(id);
+        request.setAttribute("author",author);
+        requestDispatcher.forward(request,response);
+    }
+    private void updateAuthorInfo(HttpServletRequest request, HttpServletResponse response)throws SQLException, IOException, ServletException{
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("ten");
+        int yearOfBirth = Integer.parseInt(request.getParameter("namSinh"));
+        int yearOfDeath = Integer.parseInt(request.getParameter("namMat"));
+        int numberOfBook = Integer.parseInt(request.getParameter("soTacPham"));
+        String nationality = request.getParameter("quocTich");
+        String wikiURL = request.getParameter("linkWiki");
+        String avatarURL = request.getParameter("avatar");
+        Author author = new Author(id,name,yearOfBirth,yearOfDeath,numberOfBook,nationality,wikiURL,avatarURL);
+        dao.updateAuthorInfo(author);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/edit.jsp");
+        requestDispatcher.forward(request,response);
     }
 
 }

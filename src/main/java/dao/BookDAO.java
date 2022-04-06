@@ -75,38 +75,40 @@ public class BookDAO {
         return author;
     }
 
-    public Author updateAuthorInfo(Author author) {
-        PreparedStatement preparedStatement;
-        try {
-            preparedStatement = connection.prepareStatement(getAuthorSQLById);
-            int id = author.getId();
-            preparedStatement.setInt(1, id);
+    public Author getAuthorById(int id){
+        Author author = null;
+        try(PreparedStatement preparedStatement = connection.prepareStatement(getAuthorSQLById)){
+            preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-
-                // get input
+            while (resultSet.next()){
                 String name = resultSet.getString("ten");
-                int yearOfBirth = resultSet.getInt("namSinh");
-                int yearOfDeath = resultSet.getInt("namMat");
-                int numberOfBook = resultSet.getInt("soTacPham");
+                int yearOfBirth = Integer.parseInt(String.valueOf(resultSet.getInt("namSinh")));
+                int yearOfDeath = Integer.parseInt(String.valueOf(resultSet.getInt("namMat")));
+                int numberOfBook = Integer.parseInt(String.valueOf(resultSet.getInt("soTacPham")));
                 String nationality = resultSet.getString("quocTich");
-                String linkWiki = resultSet.getString("linkWiki");
-                String avatar = resultSet.getString("avatar");
-
-                // update info
-                preparedStatement = connection.prepareStatement(updateAuthorInfoById);
-                preparedStatement.setString(1,name);
-                preparedStatement.setInt(2,yearOfBirth);
-                preparedStatement.setInt(3,yearOfDeath);
-                preparedStatement.setInt(4,numberOfBook);
-                preparedStatement.setString(5,nationality);
-                preparedStatement.setString(6,linkWiki);
-                preparedStatement.setString(7,avatar);
-                preparedStatement.setInt(8,id);
+                String wikiURL = resultSet.getString("linkWiki");
+                String avatarURL = resultSet.getString("avatar");
+                author = new Author(id,name,yearOfBirth,yearOfDeath,numberOfBook,nationality,wikiURL,avatarURL);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return author;
+    }
+
+    public boolean updateAuthorInfo(Author author)throws SQLException {
+        boolean rowUpdated;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateAuthorInfoById)) {
+            preparedStatement.setString(1, author.getName());
+            preparedStatement.setInt(2, author.getYearOfBirth());
+            preparedStatement.setInt(3, author.getYearOfDeath());
+            preparedStatement.setInt(4, author.getNumberOfBook());
+            preparedStatement.setString(5, author.getCountry());
+            preparedStatement.setString(6, author.getWikiURL());
+            preparedStatement.setString(7, author.getAvatarURL());
+            preparedStatement.setInt(8, author.getId());
+            rowUpdated = preparedStatement.executeUpdate() > 0;
+        }
+        return rowUpdated;
     }
 }
