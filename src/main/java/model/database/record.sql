@@ -130,3 +130,5 @@ values (1,1,20),
        (1,2,17);
 
 # xoa thong tin khi bi loi
+UPDATE tacgia
+SET id = 30 WHERE id in (100, 101);

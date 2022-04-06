@@ -12,14 +12,16 @@ public class BookDAO {
     public static Connection connection = SingletonConnection.getConnection();
     public static final String getAllAuthorSQL = "select * from tacgia;";
     public static final String getAllCategorySQL = "select * from theloai;";
-    public static final String getAuthorSQLByName = "select * from tacgia where ten = ?";
+    public static final String getAuthorSQLByName = "SELECT * FROM tacgia WHERE ten = ?";
+    public static final String getAuthorSQLById = "SELECT * FROM tacgia WHERE id = ?";
+    public static final String updateAuthorInfoById = "UPDATE tacgia SET ten = ?, namSinh = ?, namMat = ?, soTacPham = ?, quocTich = ?, linkWiki = ?, avatar = ? WHERE id = ?";
 
 
     public ArrayList<Author> getAllAuthor() throws SQLException {
         ArrayList<Author> list = new ArrayList<>();
         PreparedStatement pS = connection.prepareStatement(getAllAuthorSQL);
         ResultSet rS = pS.executeQuery();
-        while (rS.next()){
+        while (rS.next()) {
             String name = rS.getString("ten");
             int yearOfBirth = rS.getInt("namSinh");
             int yearOfDeath = rS.getInt("namMat");
@@ -27,15 +29,16 @@ public class BookDAO {
             String country = rS.getString("quocTich");
             String wikiURL = rS.getString("linkWiki");
             String avatarURL = rS.getString("avatar");
-            list.add(new Author(name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL));
+            list.add(new Author(name, yearOfBirth, yearOfDeath, numberOfBook, country, wikiURL, avatarURL));
         }
-    return list;
+        return list;
     }
+
     public ArrayList<Author> getAllCategory() throws SQLException {
         ArrayList<Author> list = new ArrayList<>();
         PreparedStatement pS = connection.prepareStatement(getAllAuthorSQL);
         ResultSet rS = pS.executeQuery();
-        while (rS.next()){
+        while (rS.next()) {
             String name = rS.getString("ten");
             int yearOfBirth = rS.getInt("namSinh");
             int yearOfDeath = rS.getInt("namMat");
@@ -43,20 +46,20 @@ public class BookDAO {
             String country = rS.getString("quocTich");
             String wikiURL = rS.getString("linkWiki");
             String avatarURL = rS.getString("avatar");
-            list.add(new Author(name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL));
+            list.add(new Author(name, yearOfBirth, yearOfDeath, numberOfBook, country, wikiURL, avatarURL));
         }
-    return list;
+        return list;
     }
 
-// Tìm kiếm tác giả theo tên
-    public Author getAuthorByName(String searchName){
+    // Tìm kiếm tác giả theo tên
+    public Author getAuthorByName(String searchName) {
         Author author = null;
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         try {
             preparedStatement = connection.prepareStatement(getAuthorSQLByName);
-            preparedStatement.setString(1,searchName);
+            preparedStatement.setString(1, searchName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 String name = resultSet.getString("ten");
                 int yearOfBirth = resultSet.getInt("namSinh");
                 int yearOfDeath = resultSet.getInt("namMat");
@@ -64,7 +67,7 @@ public class BookDAO {
                 String nationality = resultSet.getString("quocTich");
                 String linkWiki = resultSet.getString("linkWiki");
                 String avatar = resultSet.getString("avatar");
-                author = new Author(name,yearOfBirth,yearOfDeath,numberOfBook,nationality,linkWiki,avatar);
+                author = new Author(name, yearOfBirth, yearOfDeath, numberOfBook, nationality, linkWiki, avatar);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,4 +75,38 @@ public class BookDAO {
         return author;
     }
 
+    public Author updateAuthorInfo(Author author) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement(getAuthorSQLById);
+            int id = author.getId();
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                // get input
+                String name = resultSet.getString("ten");
+                int yearOfBirth = resultSet.getInt("namSinh");
+                int yearOfDeath = resultSet.getInt("namMat");
+                int numberOfBook = resultSet.getInt("soTacPham");
+                String nationality = resultSet.getString("quocTich");
+                String linkWiki = resultSet.getString("linkWiki");
+                String avatar = resultSet.getString("avatar");
+
+                // update info
+                preparedStatement = connection.prepareStatement(updateAuthorInfoById);
+                preparedStatement.setString(1,name);
+                preparedStatement.setInt(2,yearOfBirth);
+                preparedStatement.setInt(3,yearOfDeath);
+                preparedStatement.setInt(4,numberOfBook);
+                preparedStatement.setString(5,nationality);
+                preparedStatement.setString(6,linkWiki);
+                preparedStatement.setString(7,avatar);
+                preparedStatement.setInt(8,id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return author;
+    }
 }
