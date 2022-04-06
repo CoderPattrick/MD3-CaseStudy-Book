@@ -10,7 +10,15 @@ public class SingletonConnection {
     private static String user = "root";
     private static String pass = "123456";
 
-
+    public static void main(String[] args) {
+        try {
+            getConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         if(connection==null){
             Class.forName("com.mysql.jdbc.Driver");
