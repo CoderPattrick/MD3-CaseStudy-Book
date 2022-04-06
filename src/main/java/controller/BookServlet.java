@@ -2,6 +2,7 @@ package controller;
 
 import dao.BookDAO;
 import model.Author;
+import model.Category;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,6 +29,9 @@ public class BookServlet extends HttpServlet {
                 case "getAllAuthor":
                     showListAuthorForm(req,resp);
                     break;
+                case "getAllCategory":
+                    showListCategoryForm(req,resp);
+                    break;
                 default:
                     break;
             }
@@ -35,8 +39,12 @@ public class BookServlet extends HttpServlet {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String action = req.getParameter("action");
@@ -50,16 +58,18 @@ public class BookServlet extends HttpServlet {
 //        }
     }
 
-    private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         RequestDispatcher rD = req.getRequestDispatcher("listAuthor.jsp");
-        try {
             ArrayList<Author> list = dao.getAllAuthor();
             req.setAttribute("listAuthor",list);
             rD.forward(req,resp);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
+    }
+    private void showListCategoryForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        RequestDispatcher rD = req.getRequestDispatcher("listCategory.jsp");
+            ArrayList<Category> list = dao.getAllCategory();
+            req.setAttribute("listCategory",list);
+            rD.forward(req,resp);
     }
 
 }

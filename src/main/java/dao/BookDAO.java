@@ -1,6 +1,7 @@
 package dao;
 
 import model.Author;
+import model.Category;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,19 +31,13 @@ public class BookDAO {
         }
     return list;
     }
-    public ArrayList<Author> getAllCategory() throws SQLException {
-        ArrayList<Author> list = new ArrayList<>();
-        PreparedStatement pS = connection.prepareStatement(getAllAuthorSQL);
+    public ArrayList<Category> getAllCategory() throws SQLException {
+        ArrayList<Category> list = new ArrayList<>();
+        PreparedStatement pS = connection.prepareStatement(getAllCategorySQL);
         ResultSet rS = pS.executeQuery();
         while (rS.next()){
             String name = rS.getString("ten");
-            int yearOfBirth = rS.getInt("namSinh");
-            int yearOfDeath = rS.getInt("namMat");
-            int numberOfBook = rS.getInt("soTacPham");
-            String country = rS.getString("quocTich");
-            String wikiURL = rS.getString("linkWiki");
-            String avatarURL = rS.getString("avatar");
-            list.add(new Author(name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL));
+            list.add(new Category(name));
         }
     return list;
     }

@@ -15,9 +15,7 @@
 <h2>List Category</h2>
 <table border="1">
     <tr>
-        <th></th>
         <th>Category</th>
-
     </tr>
     <c:forEach items="${listCategory}" var="category">
         <tr>
