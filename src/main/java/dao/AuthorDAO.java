@@ -23,16 +23,16 @@ public class AuthorDAO implements DAO<Author> {
     @Override
     public ArrayList<Author> getAll() throws SQLException {
         ArrayList<Author> list = new ArrayList<>();
-        PreparedStatement pS = connection.prepareStatement(getAllAuthor);
-        ResultSet rS = pS.executeQuery();
-        while (rS.next()) {
-            String name = rS.getString("ten");
-            int yearOfBirth = rS.getInt("namSinh");
-            int yearOfDeath = rS.getInt("namMat");
-            int numberOfBook = rS.getInt("soTacPham");
-            String country = rS.getString("quocTich");
-            String wikiURL = rS.getString("linkWiki");
-            String avatarURL = rS.getString("avatar");
+        PreparedStatement preparedStatement = connection.prepareStatement(getAllAuthor);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            String name = resultSet.getString("ten");
+            int yearOfBirth = resultSet.getInt("namSinh");
+            int yearOfDeath = resultSet.getInt("namMat");
+            int numberOfBook = resultSet.getInt("soTacPham");
+            String country = resultSet.getString("quocTich");
+            String wikiURL = resultSet.getString("linkWiki");
+            String avatarURL = resultSet.getString("avatar");
             list.add(new Author(name, yearOfBirth, yearOfDeath, numberOfBook, country, wikiURL, avatarURL));
         }
         return list;
