@@ -10,6 +10,11 @@
 <html>
 <head>
     <title>List Author</title>
+    <style>
+        img{
+            width: 60px; height: 60px
+        }
+    </style>
 </head>
 <body>
 <h2>List Author</h2>
@@ -18,22 +23,27 @@
         <th></th>
         <th>Name</th>
         <th>Year of birth</th>
-        <th>Year of Death</th>
-        <th>Number of book</th>
-        <th>Country</th>
-        <th>Detail</th>
+        <th>Year of death</th>
+        <th>Number of book written</th>
+        <th>Nationality</th>
+        <th>Wiki URL</th>
     </tr>
-<c:forEach items="${listAuthor}" var="author">
+<c:forEach items="${authorList}" var="author">
     <tr>
-        <td><img src='${author.getAvatarURL()}' style="width: 60px; height: 60px" } alt="Author.img"></td>
+        <td><img src='${author.getAvatarURL()}' alt="Author.img"></td>
         <td>${author.getName()}</td>
         <td>${author.getYearOfBirth()}</td>
         <td>${author.getYearOfDeath()}</td>
         <td>${author.getNumberOfBook()}</td>
         <td>${author.getCountry()}</td>
         <td>${author.getWikiURL()}</td>
+        <td>
+            <a href="/author?action=edit&id=${author.id}">Edit</a>
+            <a href="/author?action=delete&id=${author.id}">Delete</a>
+        </td>
     </tr>
 </c:forEach>
 </table>
+<a href="/author?action=create">Add new Author</a>
 </body>
 </html>
