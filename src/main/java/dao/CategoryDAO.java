@@ -52,26 +52,21 @@ public class CategoryDAO implements DAO<Category> {
     }
 
     @Override
-    public boolean insertIntoDB(Category object) throws SQLException {
-
-            System.out.println(INSERT_CATEGORY);
-            // try-with-resource statement will auto close the connection.
-            try (Connection connection = getConnection();
-                 PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY)) {
-                preparedStatement.setString(1, object.getName());
-                System.out.println(preparedStatement);
-                preparedStatement.executeUpdate();
-            }
-            return false;
+    public boolean insertIntoDB(Category category) throws SQLException {
+        boolean rowUpdate;
+        PreparedStatement preparedStatement;
+        preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
+        preparedStatement.setString(1, category.getName());
+        rowUpdate = preparedStatement.execute();
+        return rowUpdate;
     }
 
     @Override
-    public boolean editRecord(Category object) throws SQLException {
+    public boolean editRecord(Category category) throws SQLException {
         boolean rowUpdated;
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(EDIT_CATEGORY);) {
-            statement.setString(1, object.getName());
-
+            statement.setString(1, category.getName());
             rowUpdated = statement.executeUpdate() > 0;
         }
         return rowUpdated;
@@ -80,14 +75,13 @@ public class CategoryDAO implements DAO<Category> {
 
     @Override
     public boolean deleteRecord(int id) throws SQLException {
-        boolean rowDeleted;
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(DELETE_CATEGORY);) {
-            statement.setInt(1, id);
-            rowDeleted = statement.executeUpdate() > 0;
-        }
-        return rowDeleted;
+        boolean rowDelete;
+        PreparedStatement pS = connection.prepareStatement(DELETE_CATEGORY);
+        pS.setInt(1,id);
+        rowDelete = pS.executeUpdate() > 0;
+        return rowDelete;
     }
+
     public static ArrayList<Category> findAllByBookId(int id){
         ArrayList<Category> categories =new ArrayList<>();
         try (
