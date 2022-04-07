@@ -16,76 +16,92 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "BookServlet" , value = "/author")
 public class BookServlet extends HttpServlet {
+
     AuthorDAO authorDAO = new AuthorDAO();
     CategoryDAO categoryDAO = new CategoryDAO();
     BookDAO bookDAO = new BookDAO();
 
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        String action = req.getParameter("action");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        String action = request.getParameter("action");
         try {
             if (action == null) {
                 action = "";
             }
-            switch (action){
-                    //book
+            switch (action) {
+                //BOOK
                 case "getAllBook":
-                    showListBookForm(req,resp);
+                    showListBookForm(request, response);
                     break;
                 case "deleteBookById":
-                    showDeleteBookForm(req,resp);
+                    showDeleteBookForm(request, response);
                     break;
-
-                    //author
+                //AUTHOR
                 case "getAllAuthor":
-                    showListAuthorForm(req, resp);
+                    showAuthorListForm(request, response);
                     break;
                 case "updateAuthorInfo":
-                    showUpdateAuthorInfoForm(req, resp);
+                    showUpdateAuthorInfoForm(request, response);
                     break;
                 case "insertAuthor":
-                    showInsertAuthorForm(req,resp);
+                    showInsertAuthorForm(request, response);
                     break;
                 case "deleteAuthor":
-                    deleteAuthor(req,resp);
+                    deleteAuthor(request, response);
                     break;
                 case "getAuthorByName":
-                    getAuthorByName(req,resp);
+                    getAuthorByName(request, response);
                     break;
-
+                //CATEGORY
+                case "getAllCategory":
+                    showListCategoryForm(request, response);
+                    break;
+                case "deleteCategory":
+                    deleteCategory(request, response);
+                    break;
+                case "showCreateCateForm":
+                    showCreateCateForm(request, response);
+                    break;
+                default:
+                    break;
             }
         } catch (ServletException | SQLException | IOException e) {
             e.printStackTrace();
         }
     }
-
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        String action = req.getParameter("action");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        String action = request.getParameter("action");
 
         try {
             if (action == null) {
                 action = "";
             }
             switch (action) {
-                    //AUTHOR
+                //AUTHOR
                 case "updateAuthorInfo":
-                    updateAuthorInfo(req, resp);
+                    updateAuthorInfo(request, response);
                     break;
                 case "insertAuthor":
-                    insertAuthor(req,resp);
+                    insertAuthor(request, response);
                     break;
-                case "getAuthorById":
-                    getAuthorById(req,resp);
-                    break;
-
-
-                    //BOOK
+                //BOOK
                 case "deleteBookById":
-                    deleteBookById(req,resp);
+                    deleteBookById(request, response);
+                    break;
+                //CAREGORY
+                case "deleteCategoryById":
+                    break;
+                case "createCategory":
+                    insertCategory(request, response);
+                    break;
+                case "editCategory":
+                    editCategory(request, response);
                     break;
             }
         }catch (ServletException | IOException | SQLException e) {
@@ -106,7 +122,7 @@ public class BookServlet extends HttpServlet {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/create.jsp");
         requestDispatcher.forward(request,response);
     }
-    private void showListAuthorForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    private void showAuthorListForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/list.jsp");
         ArrayList<Author> list = authorDAO.getAll();
         request.setAttribute("authorList", list);
@@ -149,32 +165,56 @@ public class BookServlet extends HttpServlet {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/list.jsp");
         requestDispatcher.forward(request,response);
     }
-    private void getAuthorByName(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException,SQLException{
+    private void getAuthorByName(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException,SQLException {
         String search = request.getParameter("search");
         Author author = authorDAO.getAuthorByName(search);
         ArrayList<Author> searchList = new ArrayList<>();
         searchList.add(author);
         request.setAttribute("listAuthor", searchList);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/list.jsp");
-        requestDispatcher.forward(request,response);
+        requestDispatcher.forward(request, response);
     }
 
-    private void getAuthorById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        RequestDispatcher rD = req.getRequestDispatcher("authorById.jsp");
-        String result =req.getParameter("id");
-        int id = Integer.parseInt(result);
-        Author author = authorDAO.getById(id);
-        req.setAttribute("author",author);
-        rD.forward(req,resp);
-    }
 
 
     //CATEGORY
-    private void showListCategoryForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        RequestDispatcher rD = req.getRequestDispatcher("listCategory.jsp");
-            ArrayList<Category> list = categoryDAO.getAll();
-            req.setAttribute("listCategory",list);
-            rD.forward(req,resp);
+    private void showListCategoryForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("listCategory.jsp");
+        ArrayList<Category> list = categoryDAO.getAll();
+        request.setAttribute("listCategory",list);
+        requestDispatcher.forward(request,response);
+    }
+    private void showCreateCateForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("createCategory.jsp");
+        requestDispatcher.forward(request, response);
+    }
+    private void editCategory(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        Category book = new Category(id, name);
+        categoryDAO.editRecord(book);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("editCategory.jsp");
+        dispatcher.forward(request, response);
+    }
+    private void deleteCategory(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException{
+        int id = Integer.parseInt(request.getParameter("id"));
+        categoryDAO.deleteRecord(id);
+        List<Category> listCategory = categoryDAO.getAll();
+        request.setAttribute("listCategory", listCategory);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("listCategory.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void insertCategory(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, SQLException, ServletException {
+        String name = request.getParameter("name");
+        Category category = new Category(name);
+        categoryDAO.insertIntoDB(category);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("createCategory.jsp");
+        dispatcher.forward(request, response);
     }
 
 

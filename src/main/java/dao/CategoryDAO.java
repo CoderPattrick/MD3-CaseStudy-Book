@@ -3,14 +3,24 @@ package dao;
 import model.Author;
 import model.Category;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import static dao.SingletonConnection.getConnection;
 
 public class CategoryDAO implements DAO<Category> {
     public static final String getAllCategorySQL = "select * from theloai;";
+
+    public static final String INSERT_CATEGORY = "insert into theloai(ten) value(?);";
+    public static final String DELETE_CATEGORY = "delete from theloai where id = ?;";
+    public static final String EDIT_CATEGORY= "update theloai set ten = ? where id = ?";
+
     public static final String Get_By_ID = "SELECT *FROM tacgia WHERE id =?";
+
 
     @Override
     public ArrayList<Category> getAll() throws SQLException {
@@ -23,6 +33,7 @@ public class CategoryDAO implements DAO<Category> {
         }
         return list;
     }
+
 
     @Override
     public Category getById(int id) throws SQLException {
@@ -42,17 +53,40 @@ public class CategoryDAO implements DAO<Category> {
 
     @Override
     public boolean insertIntoDB(Category object) throws SQLException {
-        return false;
+
+            System.out.println(INSERT_CATEGORY);
+            // try-with-resource statement will auto close the connection.
+            try (Connection connection = getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY)) {
+                preparedStatement.setString(1, object.getName());
+                System.out.println(preparedStatement);
+                preparedStatement.executeUpdate();
+            }
+            return false;
     }
 
     @Override
     public boolean editRecord(Category object) throws SQLException {
-        return false;
+        boolean rowUpdated;
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(EDIT_CATEGORY);) {
+            statement.setString(1, object.getName());
+
+            rowUpdated = statement.executeUpdate() > 0;
+        }
+        return rowUpdated;
     }
+
 
     @Override
     public boolean deleteRecord(int id) throws SQLException {
-        return false;
+        boolean rowDeleted;
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_CATEGORY);) {
+            statement.setInt(1, id);
+            rowDeleted = statement.executeUpdate() > 0;
+        }
+        return rowDeleted;
     }
     public static ArrayList<Category> findAllByBookId(int id){
         ArrayList<Category> categories =new ArrayList<>();
