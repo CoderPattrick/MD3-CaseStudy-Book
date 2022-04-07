@@ -96,5 +96,3 @@ public class CategoryDAO implements DAO<Category> {
         return categories;
     }
 }
-
-
