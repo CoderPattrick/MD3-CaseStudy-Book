@@ -11,11 +11,20 @@
 <head>
     <title>Book</title>
 </head>
+<script language="JavaScript">
+    function deleteBook(){
+        ${id}=${book.getId()}
+        ${action}="deleteBookById";
+        document.getElementById("submit").click();
+    }
+
+
+</script>
 <body>
 <h2>Book</h2>
 <form method="post">
     Book ID: <input type="text" name="id" size="50"/>
-    <input type="submit" value="Search"/>
+    <input type="submit" id="submit" value="Search"/>
 </form>
 <table border="1">
         <tr>
@@ -28,6 +37,7 @@
             <th>Reprint</th>
             <th>Summary</th>
             <th>Price</th>
+            <th>Action</th>
         </tr>
         <tr>
             <td><img src='${book.getAvatarURL()}' style="width: 60px; height: 60px" } alt="Author.img"></td>
@@ -45,6 +55,10 @@
             <td>${book.getReprint()}</td>
             <td>${book.getSummary()}</td>
             <td>${book.getPrice()}</td>
+            <td>
+                <a href="/BookServlet?action=editBookById&id=<c:out value='${book.getId()}' />">Edit</a>
+                &nbsp;&nbsp;
+                <a href="/BookServlet?action=deleteBookById2&id=<c:out value='${book.getId()}'/>">Delete</a>
         </tr>
 </table>
 </body>

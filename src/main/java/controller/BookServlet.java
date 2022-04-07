@@ -48,6 +48,9 @@ public class BookServlet extends HttpServlet {
                 case "getBookById":
                     showBookByIdForm(request, response);
                     break;
+                case "deleteBookById2":
+                    deleteBookById(request, response);
+                    break;
 
                 //AUTHOR
                 case "getAllAuthor":
