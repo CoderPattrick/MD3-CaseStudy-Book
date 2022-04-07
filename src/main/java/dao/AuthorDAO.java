@@ -2,10 +2,7 @@ package dao;
 
 import model.Author;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -23,9 +20,10 @@ public class AuthorDAO implements DAO<Author> {
     @Override
     public ArrayList<Author> getAll() throws SQLException {
         ArrayList<Author> list = new ArrayList<>();
-        PreparedStatement preparedStatement = connection.prepareStatement(getAllAuthor);
+        PreparedStatement preparedStatement = connection.prepareStatement(getAllAuthor, Statement.RETURN_GENERATED_KEYS);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
+            int id = resultSet.getInt("id");
             String name = resultSet.getString("ten");
             int yearOfBirth = resultSet.getInt("namSinh");
             int yearOfDeath = resultSet.getInt("namMat");
@@ -33,7 +31,8 @@ public class AuthorDAO implements DAO<Author> {
             String country = resultSet.getString("quocTich");
             String wikiURL = resultSet.getString("linkWiki");
             String avatarURL = resultSet.getString("avatar");
-            list.add(new Author(name, yearOfBirth, yearOfDeath, numberOfBook, country, wikiURL, avatarURL));
+            Author author = new Author(id,name, yearOfBirth, yearOfDeath, numberOfBook, country, wikiURL, avatarURL);
+            list.add(author);
         }
         return list;
     }

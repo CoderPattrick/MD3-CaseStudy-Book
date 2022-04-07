@@ -38,12 +38,12 @@
         <td>${author.getCountry()}</td>
         <td>${author.getWikiURL()}</td>
         <td>
-            <a href="/author?action=edit&id=${author.id}">Edit</a>
-            <a href="/author?action=delete&id=${author.id}">Delete</a>
+            <a href="/BookServlet?action=updateAuthorInfo&id=${author.getId()}">Edit</a>
+            <a href="/BookServlet?action=deleteAuthor&id=${author.getId()}">Delete</a>
         </td>
     </tr>
 </c:forEach>
 </table>
-<a href="/author?action=create">Add new Author</a>
+<a href="/BookServlet?action=create">Add new Author</a>
 </body>
 </html>
