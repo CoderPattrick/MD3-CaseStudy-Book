@@ -15,6 +15,7 @@ public class BookDAO implements DAO<Book> {
     private static final String deleteBookByIdSQL ="delete from sach where id = ?;";
     private static final String deleteBookTypeByIdSQL ="delete from sach_theloai WHERE idSach = ?;";
     private static final String deleteBookAuthorByIdSQL ="delete from sach_tacgia WHERE idSach = ?;";
+    private static final String deleteBookInCartSQL ="delete from chitietgiohang WHERE id_sach = ?;";
     public static final String Get_By_ID = "SELECT * FROM sach where id = ? ;";
     public static final String Get_All = "SELECT *FROM sach;";
     public static final String GET_BY_ID_CATEGORY = "SELECT *FROM sach_theloai WHERE idTheLoai=?;";
@@ -94,14 +95,17 @@ public class BookDAO implements DAO<Book> {
     public boolean deleteRecord(int id) throws SQLException {
         PreparedStatement pS1 = connection.prepareStatement(deleteBookAuthorByIdSQL);
         PreparedStatement pS2 = connection.prepareStatement(deleteBookTypeByIdSQL);
+        PreparedStatement pS4 = connection.prepareStatement(deleteBookInCartSQL);
         PreparedStatement pS3 = connection.prepareStatement(deleteBookByIdSQL);
 
         pS1.setInt(1,id);
         pS2.setInt(1,id);
+        pS4.setInt(1,id);
         pS3.setInt(1,id);
 
         pS1.execute();
         pS2.execute();
+        pS4.execute();
         pS3.execute();
         return true;
     }
