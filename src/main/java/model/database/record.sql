@@ -131,3 +131,4 @@ values (1,1,20),
        (1,2,17);
 
 # xoa thong tin khi bi loi
+drop database cs;

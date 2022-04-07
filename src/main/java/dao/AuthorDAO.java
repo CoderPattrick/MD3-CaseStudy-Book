@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class AuthorDAO implements DAO<Author> {
     public static Connection connection = SingletonConnection.getConnection();
     public static final String insertAuthor = "INSERT INTO tacgia (ten, namSinh, namMat, soTacPham, quocTich, linkWiki, avatar) VALUE (?,?,?,?,?,?,?) ";
@@ -16,6 +17,8 @@ public class AuthorDAO implements DAO<Author> {
     public static final String getAuthorByName = "SELECT * FROM tacgia WHERE ten = ?";
     public static final String getAuthorById = "SELECT * FROM tacgia WHERE id = ?";
     public static final String updateAuthorInfoById = "UPDATE tacgia SET ten = ?, namSinh = ?, namMat = ?, soTacPham = ?, quocTich = ?, linkWiki = ?, avatar = ? WHERE id = ?";
+    public static final String FIND_ALL_AUTHOR_BY_BOOKID = "SELECT id, ten, namSinh, namMat, soTacPham, quocTich, linkWiki, avatar FROM tacgia join sach_tacgia st on tacgia.id = st.idTacGia where st.idSach=?;";
+
 
     @Override
     public ArrayList<Author> getAll() throws SQLException {
@@ -40,17 +43,18 @@ public class AuthorDAO implements DAO<Author> {
     public boolean insertIntoDB(Author author) throws SQLException {
         boolean rowUpdated;
         PreparedStatement preparedStatement;
-           preparedStatement = connection.prepareStatement(insertAuthor);
-           preparedStatement.setString(1,author.getName());
-           preparedStatement.setInt(2,author.getYearOfBirth());
-           preparedStatement.setInt(3,author.getYearOfDeath());
-           preparedStatement.setInt(4,author.getNumberOfBook());
-           preparedStatement.setString(5,author.getCountry());
-           preparedStatement.setString(6,author.getWikiURL());
-           preparedStatement.setString(7,author.getAvatarURL());
-           rowUpdated = preparedStatement.execute();
-           return rowUpdated;
+        preparedStatement = connection.prepareStatement(insertAuthor);
+        preparedStatement.setString(1, author.getName());
+        preparedStatement.setInt(2, author.getYearOfBirth());
+        preparedStatement.setInt(3, author.getYearOfDeath());
+        preparedStatement.setInt(4, author.getNumberOfBook());
+        preparedStatement.setString(5, author.getCountry());
+        preparedStatement.setString(6, author.getWikiURL());
+        preparedStatement.setString(7, author.getAvatarURL());
+        rowUpdated = preparedStatement.execute();
+        return rowUpdated;
     }
+
 
 
     @Override
@@ -85,6 +89,7 @@ public class AuthorDAO implements DAO<Author> {
         }
         return author;
     }
+
 
     public Author getById(int id) {
         Author author = null;
@@ -121,5 +126,31 @@ public class AuthorDAO implements DAO<Author> {
             rowUpdated = preparedStatement.execute();
         }
         return rowUpdated;
+    }
+
+
+    public static ArrayList<Author> findAllByBookId(int id){
+        ArrayList<Author> authors =new ArrayList<>();
+        try (
+                PreparedStatement statement = connection.prepareStatement(FIND_ALL_AUTHOR_BY_BOOKID);
+                ){
+            statement.setInt(1,id);
+            ResultSet resultSet =statement.executeQuery();
+            while (resultSet.next()){
+                int idA = resultSet.getInt("id");
+                String name = resultSet.getString("ten");
+                int yearOfBirth = resultSet.getInt("namSinh");
+                int yearOfDeath= resultSet.getInt("namMat");
+                int numberOfBook = resultSet.getInt("soTacPham");
+                String country = resultSet.getString("quocTich");
+                String wikiURL = resultSet.getString("linkWiki");
+                String avatarURL = resultSet.getString("avatar");
+                authors.add(new Author(idA,name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authors;
     }
 }
