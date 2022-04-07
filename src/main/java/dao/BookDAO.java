@@ -6,8 +6,9 @@ import model.Category;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class BookDAO implements DAO<Book> {
@@ -20,6 +21,7 @@ public class BookDAO implements DAO<Book> {
     public static final String Get_All = "SELECT *FROM sach;";
     public static final String GET_BY_ID_CATEGORY = "SELECT *FROM sach_theloai WHERE idTheLoai=?;";
     public static final String GET_BY_ID_AUTHOR = "SELECT *FROM sach_tacgia WHERE idTacGia=?;";
+    public static final String AddNewBook = "INSERT INTO sach(ten, namXuatBan, taiBanLanThu, maISBN, moTa, NXB, GPXB, avatar, view, sachDeCu, sachHot, giaSach) values (?,?,?,?,?,?,?,?,?,?,?,?);";
     AuthorDAO authorDAO = new AuthorDAO();
     CategoryDAO categoryDAO = new CategoryDAO();
     static BookDAO bookDAO = new BookDAO();
@@ -83,7 +85,63 @@ public class BookDAO implements DAO<Book> {
     }
     @Override
     public boolean insertIntoDB(Book object) throws SQLException {
-        return false;
+            int idB = 0;
+           List<Category> categories = object.getCategoryList();
+           List<Author> authors = object.getAuthorList();
+            List<Integer> id_catogories = new ArrayList<>();
+            List<Integer> id_authors = new ArrayList<>();
+            for (int i = 0; i < categories.size(); i++) {
+                int idC = categories.get(i).getId();
+                id_catogories.add(idC);
+            }
+            for (int i = 0; i < authors.size(); i++) {
+                int idA = authors.get(i).getId();
+                id_authors.add(idA);
+            }
+            try {
+                connection.setAutoCommit(false);
+                PreparedStatement statement = connection.prepareStatement(AddNewBook, Statement.RETURN_GENERATED_KEYS);
+                statement.setString(1, object.getName());
+                statement.setInt(2, object.getPublishYear());
+                statement.setInt(3, object.getReprint());
+                statement.setLong(4, object.getISBNCode());
+                statement.setString(5, object.getSummary());
+                statement.setString(6, object.getPublisher());
+                statement.setString(7, object.getPublishLicense());
+                statement.setString(8, object.getAvatarURL());
+                statement.setInt(9, object.getViewCount());
+                statement.setBoolean(10, object.isRecommended());
+                statement.setBoolean(11, object.isBestSeller());
+                statement.setDouble(12, object.getPrice());
+                statement.executeUpdate();
+                ResultSet resultSet = statement.getGeneratedKeys();
+                while (resultSet.next()) {
+                    idB = resultSet.getInt(1);
+                }
+                PreparedStatement statement1 = connection.prepareStatement("INSERT INTO sach_theloai(idSach, idTheLoai) values (?,?);");
+                for (int idCatogory : id_catogories
+                ) {
+                    statement1.setInt(1, idB);
+                    statement1.setInt(2, idCatogory);
+                    statement1.executeUpdate();
+                }
+                PreparedStatement statement2 = connection.prepareStatement("INSERT INTO sach_tacgia(idSach, idTacGia) values (?,?);");
+                for (int idAuthor : id_authors
+                ) {
+                    statement2.setInt(1, idB);
+                    statement2.setInt(2, idAuthor);
+                    statement2.executeUpdate();
+                }
+                connection.commit();
+            } catch (SQLException e) {
+                try{
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                e.printStackTrace();
+            }
+        return true;
     }
 
     @Override
