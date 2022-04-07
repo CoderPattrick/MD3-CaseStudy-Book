@@ -12,6 +12,7 @@ public class AuthorDAO implements DAO<Author>{
     public static final String getAllAuthorSQL = "select * from tacgia;";
     public static final String getAuthorByIdSQL = "select * from tacgia where id = ?;";
     public static final String deleteAuthorByIdSQL = "delete from tacgia where id = ?;";
+    public static final String deleteBookAuthorByIdSQL = "delete from sach_tacgia where idTacGia = ?;";
     public static final String FIND_ALL_AUTHOR_BY_BOOKID = "SELECT id, ten, namSinh, namMat, soTacPham, quocTich, linkWiki, avatar FROM tacgia join sach_tacgia st on tacgia.id = st.idTacGia where st.idSach=?;";
 
 
@@ -64,9 +65,14 @@ public class AuthorDAO implements DAO<Author>{
 
     @Override
     public boolean deleteRecord(int id) throws SQLException {
-        PreparedStatement pS = connection.prepareStatement(deleteAuthorByIdSQL);
-        pS.setInt(1,id);
-        pS.executeQuery();
+        PreparedStatement pS1 = connection.prepareStatement(deleteBookAuthorByIdSQL);
+        PreparedStatement pS2 = connection.prepareStatement(deleteAuthorByIdSQL);
+
+        pS1.setInt(1,id);
+        pS2.setInt(1,id);
+
+        pS1.execute();
+        pS2.execute();
         return true;
     }
 
