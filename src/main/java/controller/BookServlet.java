@@ -55,6 +55,9 @@ public class BookServlet extends HttpServlet {
                 case "deleteAuthorById":
                     showDeleteAuthorForm(request, response);
                     break;
+                case "deleteAuthorById2":
+                    showDeleteAuthorForm2(request, response);
+                    break;
                 case "getAuthorById":
                     showAuthorByIdForm(request, response);
                     break;
@@ -73,6 +76,7 @@ public class BookServlet extends HttpServlet {
                     showEditCateForm(request, response);
                     break;
                 default:
+                    showMainPage(request,response);
                     break;
             }
 
@@ -109,6 +113,9 @@ public class BookServlet extends HttpServlet {
                 case "deleteAuthorById":
                     deleteAuthorById(request,response);
                     break;
+                case "deleteAuthorById2":
+                    deleteAuthorById2(request,response);
+                    break;
                 //BOOK
                 case "deleteBookById":
                     deleteBookById(request, response);
@@ -127,6 +134,12 @@ public class BookServlet extends HttpServlet {
         }catch (ServletException | IOException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    //Homepage
+    private void showMainPage(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("mainPage.jsp");
+        requestDispatcher.forward(request,response);
     }
 
     //AUTHOR
@@ -190,14 +203,7 @@ public class BookServlet extends HttpServlet {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/create.jsp");
         requestDispatcher.forward(request,response);
     }
-    private void deleteAuthor (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, SQLException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        authorDAO.deleteRecord(id);
-        ArrayList<Author> list = authorDAO.getAll();
-        request.setAttribute("authorList", list);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/list.jsp");
-        requestDispatcher.forward(request,response);
-    }
+
     private void getAuthorByName(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException,SQLException {
         String name = request.getParameter("search");
         Author author = authorDAO.getAuthorByName(name);
@@ -206,6 +212,19 @@ public class BookServlet extends HttpServlet {
         request.setAttribute("authorList", searchList);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/list.jsp");
         requestDispatcher.forward(request, response);
+    }
+
+    private void deleteAuthorById2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        authorDAO.deleteRecord(id);
+        ArrayList<Author> list = authorDAO.getAll();
+        request.setAttribute("authorList", list);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/list.jsp");
+        requestDispatcher.forward(request,response);
+    }
+    private void showDeleteAuthorForm2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/delete.jsp");
+        requestDispatcher.forward(request,response);
     }
 
 
