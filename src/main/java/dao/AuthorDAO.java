@@ -66,7 +66,8 @@ public class AuthorDAO implements DAO<Author>{
     public boolean deleteRecord(int id) throws SQLException {
         PreparedStatement pS = connection.prepareStatement(deleteAuthorByIdSQL);
         pS.setInt(1,id);
-        return pS.execute();
+        pS.executeQuery();
+        return true;
     }
 
     public static ArrayList<Author> findAllByBookId(int id){

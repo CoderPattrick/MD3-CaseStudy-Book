@@ -88,10 +88,6 @@ public class BookServlet extends HttpServlet {
         }
     }
 
-//Là người dùng tôi muốn
-// khi xem chi tiết một tác giả
-// có thể xem được
-// danh sách các tác phẩm của tác giả đó
     private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         RequestDispatcher rD = req.getRequestDispatcher("listAuthor.jsp");
             ArrayList<Author> list = authorDAO.getAll();
@@ -113,8 +109,10 @@ public class BookServlet extends HttpServlet {
         RequestDispatcher rD = req.getRequestDispatcher("authorById.jsp");
         String result =req.getParameter("id");
         int id = Integer.parseInt(result);
+        ArrayList<Book> listBook = bookDAO.getBookByIdAuthor(id);
         Author author = authorDAO.getById(id);
         req.setAttribute("author",author);
+        req.setAttribute("listBook",listBook);
         rD.forward(req,resp);
     }
     private void showDeleteBookForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {

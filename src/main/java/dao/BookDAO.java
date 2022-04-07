@@ -12,10 +12,13 @@ import java.util.ArrayList;
 
 public class BookDAO implements DAO<Book> {
     private static final String deleteBookByIdSQL ="delete from sach where id = ?;";
-    public static final String Get_By_ID = "SELECT *FROM sach where id=? ;";
+    public static final String Get_By_ID = "SELECT * FROM sach where id = ? ;";
     public static final String Get_All = "SELECT *FROM sach;";
+    public static final String GET_BY_ID_CATEGORY = "SELECT *FROM sach_theloai WHERE idTheLoai=?;";
+    public static final String GET_BY_ID_AUTHOR = "SELECT *FROM sach_tacgia WHERE idTacGia=?;";
     AuthorDAO authorDAO = new AuthorDAO();
     CategoryDAO categoryDAO = new CategoryDAO();
+    static BookDAO bookDAO = new BookDAO();
 
     @Override
     public ArrayList<Book> getAll() throws SQLException {
@@ -49,32 +52,30 @@ public class BookDAO implements DAO<Book> {
 
     @Override
     public Book getById(int id) throws SQLException {
-        Book newBook = null;
-        try (
-                PreparedStatement statement = connection.prepareStatement(Get_By_ID)
-        ) {
+        PreparedStatement statement = connection.prepareStatement(Get_By_ID);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            String nameBook = resultSet.getString("ten");
-            int publishYear = resultSet.getInt("namXuatBan");
-            int reprint = resultSet.getInt("taiBanLanThu");
-            Long IBSNCode = resultSet.getLong("maISBN");
-            String summary = resultSet.getString("moTa");
-            String publisher = resultSet.getString("NXB");
-            String publishLicense = resultSet.getString("GPXB");
-            String avatarB = resultSet.getString("avatar");
-            int viewCount = resultSet.getInt("view");
-            boolean isRecommended = resultSet.getBoolean("sachDeCu");
-            boolean isBestSeller = resultSet.getBoolean("sachHot");
-            double price = resultSet.getDouble("giaSach");
-            int soldQuantity = resultSet.getInt("soLuongDaBan");
-            int inStock = resultSet.getInt("sachTonKho");
-            ArrayList<Author> authors = AuthorDAO.findAllByBookId(id);
-            ArrayList<Category> categories = CategoryDAO.findAllByBookId(id);
-            newBook = new Book(id, IBSNCode, nameBook, categories, authors, publishYear, reprint, summary, publisher, publishLicense, avatarB, viewCount, isRecommended, isBestSeller, price, soldQuantity, inStock);
-        }
+        Book newBook = new Book();
+            while (resultSet.next()) {
+                String nameBook = resultSet.getString("ten");
+                int publishYear = resultSet.getInt("namXuatBan");
+                int reprint = resultSet.getInt("taiBanLanThu");
+                Long IBSNCode = resultSet.getLong("maISBN");
+                String summary = resultSet.getString("moTa");
+                String publisher = resultSet.getString("NXB");
+                String publishLicense = resultSet.getString("GPXB");
+                String avatarB = resultSet.getString("avatar");
+                int viewCount = resultSet.getInt("view");
+                boolean isRecommended = resultSet.getBoolean("sachDeCu");
+                boolean isBestSeller = resultSet.getBoolean("sachHot");
+                double price = resultSet.getDouble("giaSach");
+                int soldQuantity = resultSet.getInt("soLuongDaBan");
+                int inStock = resultSet.getInt("sachTonKho");
+                ArrayList<Author> authors = authorDAO.findAllByBookId(id);
+                ArrayList<Category> categories = categoryDAO.findAllByBookId(id);
+                newBook = new Book(id, IBSNCode, nameBook, categories, authors, publishYear, reprint, summary, publisher, publishLicense, avatarB, viewCount, isRecommended, isBestSeller, price, soldQuantity, inStock);
+            }
         return newBook;
-
     }
     @Override
     public boolean insertIntoDB(Book object) throws SQLException {
@@ -90,13 +91,14 @@ public class BookDAO implements DAO<Book> {
     public boolean deleteRecord(int id) throws SQLException {
         PreparedStatement pS = connection.prepareStatement(deleteBookByIdSQL);
         pS.setInt(1,id);
-        return pS.execute();
+        pS.executeQuery();
+        return true;
     }
 
-    public static ArrayList<Integer> getBookbyIdCategory(int idCategory) {
+    public ArrayList<Integer> getBookbyIdCategory(int idCategory) {
         ArrayList<Integer> bookListId = new ArrayList<>();
         try (
-                PreparedStatement statement = connection.prepareStatement("SELECT *FROM sach_theloai WHERE idTheLoai=?;")
+                PreparedStatement statement = connection.prepareStatement(GET_BY_ID_CATEGORY)
         ) {
             statement.setInt(1, idCategory);
             ResultSet resultSet = statement.executeQuery();
@@ -121,4 +123,30 @@ public class BookDAO implements DAO<Book> {
         }
         return books;
     }
+
+    public ArrayList<Book> getBookByIdAuthor(int idAuthor) throws SQLException{
+        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<Integer> bookIds = getIdBookByIdAuthor(idAuthor);
+        for (int i = 0; i < bookIds.size(); i++) {
+            int id = bookIds.get(i);
+            books.add(bookDAO.getById(id));
+        }
+        return books;
+    }
+
+    private ArrayList<Integer> getIdBookByIdAuthor(int idAuthor) throws SQLException {
+        ArrayList<Integer> bookListId = new ArrayList<>();
+        try (
+                PreparedStatement statement = connection.prepareStatement(GET_BY_ID_AUTHOR)
+        ) {
+            statement.setInt(1, idAuthor);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("idSach");
+                bookListId.add(id);
+            }
+        }
+        return bookListId;
+    }
+
 }
