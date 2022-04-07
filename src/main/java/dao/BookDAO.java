@@ -56,6 +56,7 @@ public class BookDAO implements DAO<Book> {
         ) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
             String nameBook = resultSet.getString("ten");
             int publishYear = resultSet.getInt("namXuatBan");
             int reprint = resultSet.getInt("taiBanLanThu");
@@ -73,7 +74,7 @@ public class BookDAO implements DAO<Book> {
             ArrayList<Author> authors = authorDAO.findAllByBookId(id);
             ArrayList<Category> categories = categoryDAO.findAllByBookId(id);
             newBook = new Book(id, IBSNCode, nameBook, categories, authors, publishYear, reprint, summary, publisher, publishLicense, avatarB, viewCount, isRecommended, isBestSeller, price, soldQuantity, inStock);
-        }
+        }}
         return newBook;
 
     }

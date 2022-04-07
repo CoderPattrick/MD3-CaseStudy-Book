@@ -49,6 +49,9 @@ public class BookServlet extends HttpServlet {
                 case "deleteAuthorById":
                     showDeleteAuthorForm(req,resp);
                     break;
+                case "getBooksByCategory":
+                    showBooksByCategoryForm(req,resp);
+                    break;
                 default:
                     break;
             }
@@ -77,6 +80,9 @@ public class BookServlet extends HttpServlet {
                     break;
                 case "deleteAuthorById":
                     deleteAuthorById(req,resp);
+                    break;
+                case  "getBooksByCategory":
+                    showListBookByCategory(req, resp);
                     break;
             }
         }catch (ServletException e) {
@@ -140,5 +146,18 @@ public class BookServlet extends HttpServlet {
         ArrayList<Book> list = bookDAO.getAll();
         req.setAttribute("listBook",list);
         rD.forward(req,resp);
+    }
+
+    private void showBooksByCategoryForm (HttpServletRequest req , HttpServletResponse resp) throws ServletException, IOException {
+        RequestDispatcher dispatcher= req.getRequestDispatcher("listBookByCategory.jsp");
+        dispatcher.forward(req,resp);
+    }
+
+    private void showListBookByCategory (HttpServletRequest req , HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("listBookByCategory.jsp");
+        int id = Integer.parseInt(req.getParameter("id"));
+        ArrayList<Book> books = bookDAO.getBookByIdCategory(id);
+        req.setAttribute("listBook",books);
+        dispatcher.forward(req,resp);
     }
 }
