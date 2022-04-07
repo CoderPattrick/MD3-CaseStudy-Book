@@ -86,10 +86,10 @@ public class BookDAO implements DAO<Book> {
     @Override
     public boolean insertIntoDB(Book object) throws SQLException {
             int idB = 0;
-           List<Category> categories = object.getCategoryList();
-           List<Author> authors = object.getAuthorList();
-            List<Integer> id_catogories = new ArrayList<>();
-            List<Integer> id_authors = new ArrayList<>();
+           ArrayList<Category> categories = object.getCategoryList();
+           ArrayList<Author> authors = object.getAuthorList();
+            ArrayList<Integer> id_catogories = new ArrayList<>();
+            ArrayList<Integer> id_authors = new ArrayList<>();
             for (int i = 0; i < categories.size(); i++) {
                 int idC = categories.get(i).getId();
                 id_catogories.add(idC);

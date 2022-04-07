@@ -124,6 +124,9 @@ public class BookServlet extends HttpServlet {
                 case "deleteBookById":
                     deleteBookById(request, response);
                     break;
+                case "getNewBook":
+                    getNewBook(request, response);
+                    break;
                 //CAREGORY
                 case "deleteCategoryById":
                     deleteCategoryById(request, response);
@@ -134,9 +137,7 @@ public class BookServlet extends HttpServlet {
                 case "editCategory":
                     editCategory(request, response);
                     break;
-                case "getNewBook":
-                    getNewBook(request, response);
-                    break;
+
             }
         }catch (ServletException | IOException | SQLException e) {
             e.printStackTrace();
@@ -327,7 +328,7 @@ public class BookServlet extends HttpServlet {
         rD.forward(req,resp);
     }
     private void getNewBookForm (HttpServletRequest request ,HttpServletResponse response) throws ServletException, IOException, SQLException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("insertNewBook.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("js/insertNewBook.jsp");
         ArrayList<Category> newCatogories = categoryDAO.getAll();
         ArrayList<Author> newAuthors = authorDAO.getAll();
         request.setAttribute("categories",newCatogories);
@@ -336,7 +337,7 @@ public class BookServlet extends HttpServlet {
     }
 
     private void getNewBook (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("insertNewBook.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("js/insertNewBook.jsp");
         String name = request.getParameter("name");
         int publishYear =Integer.parseInt(request.getParameter("publishYear"));
         int reprint = Integer.parseInt(request.getParameter("reprint"));

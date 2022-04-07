@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static dao.SingletonConnection.getConnection;
-
 public class CategoryDAO implements DAO<Category> {
     public static final String getAllCategorySQL = "select * from theloai;";
     public static final String INSERT_CATEGORY = "insert into theloai(ten) value(?);";
@@ -24,8 +22,9 @@ public class CategoryDAO implements DAO<Category> {
         PreparedStatement pS = connection.prepareStatement(getAllCategorySQL);
         ResultSet rS = pS.executeQuery();
         while (rS.next()) {
+            int id = rS.getInt("id");
             String name = rS.getString("ten");
-            list.add(new Category(name));
+            list.add(new Category(id,name));
         }
         return list;
     }
@@ -59,8 +58,7 @@ public class CategoryDAO implements DAO<Category> {
     @Override
     public boolean editRecord(Category category) throws SQLException {
         boolean rowUpdated;
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(EDIT_CATEGORY);) {
+        try (PreparedStatement statement = connection.prepareStatement(EDIT_CATEGORY);) {
             statement.setString(1, category.getName());
             rowUpdated = statement.executeUpdate() > 0;
         }
