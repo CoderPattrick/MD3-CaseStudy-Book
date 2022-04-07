@@ -5,7 +5,6 @@ import model.Author;
 import java.sql.*;
 import java.util.ArrayList;
 
-
 public class AuthorDAO implements DAO<Author> {
     public static Connection connection = SingletonConnection.getConnection();
     public static final String insertAuthor = "INSERT INTO tacgia (ten, namSinh, namMat, soTacPham, quocTich, linkWiki, avatar) VALUE (?,?,?,?,?,?,?) ";
@@ -14,6 +13,10 @@ public class AuthorDAO implements DAO<Author> {
     public static final String getAuthorByName = "SELECT * FROM tacgia WHERE ten = ?";
     public static final String getAuthorById = "SELECT * FROM tacgia WHERE id = ?";
     public static final String updateAuthorInfoById = "UPDATE tacgia SET ten = ?, namSinh = ?, namMat = ?, soTacPham = ?, quocTich = ?, linkWiki = ?, avatar = ? WHERE id = ?";
+    public static final String getAllAuthorSQL = "select * from tacgia;";
+    public static final String getAuthorByIdSQL = "select * from tacgia where id = ?;";
+    public static final String deleteAuthorByIdSQL = "delete from tacgia where id = ?;";
+    public static final String deleteBookAuthorByIdSQL = "delete from sach_tacgia where idTacGia = ?;";
     public static final String FIND_ALL_AUTHOR_BY_BOOKID = "SELECT id, ten, namSinh, namMat, soTacPham, quocTich, linkWiki, avatar FROM tacgia join sach_tacgia st on tacgia.id = st.idTacGia where st.idSach=?;";
 
 
@@ -52,17 +55,6 @@ public class AuthorDAO implements DAO<Author> {
         preparedStatement.setString(7, author.getAvatarURL());
         rowUpdated = preparedStatement.execute();
         return rowUpdated;
-    }
-
-
-
-    @Override
-    public boolean deleteRecord(int id) throws SQLException {
-        boolean rowDeleted;
-        PreparedStatement preparedStatement = connection.prepareStatement(deleteAuthor);
-        preparedStatement.setInt(1,id);
-        rowDeleted = preparedStatement.execute();
-        return rowDeleted;
     }
 
     // Tìm kiếm tác giả theo tên
@@ -127,6 +119,18 @@ public class AuthorDAO implements DAO<Author> {
         return rowUpdated;
     }
 
+    @Override
+    public boolean deleteRecord(int id) throws SQLException {
+        PreparedStatement pS1 = connection.prepareStatement(deleteBookAuthorByIdSQL);
+        PreparedStatement pS2 = connection.prepareStatement(deleteAuthorByIdSQL);
+
+        pS1.setInt(1,id);
+        pS2.setInt(1,id);
+
+        pS1.execute();
+        pS2.execute();
+        return true;
+    }
 
     public static ArrayList<Author> findAllByBookId(int id){
         ArrayList<Author> authors =new ArrayList<>();

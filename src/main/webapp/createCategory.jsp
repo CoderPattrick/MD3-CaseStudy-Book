@@ -20,7 +20,7 @@
             <tr>
                 <th>Category Name:</th>
                 <td>
-                    <input type="text" name="name" id="name" size="45"/>
+                    <input type="text" name="ten" id="ten" size="45"/>
                 </td>
             </tr>
 

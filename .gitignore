@@ -104,5 +104,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+<<<<<<< HEAD
+=======
+.idea/
+>>>>>>> dat
 /src/main/java/dao/SingletonConnection.java
 .idea
