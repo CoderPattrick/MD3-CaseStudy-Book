@@ -10,10 +10,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Book</title>
+    <title>Edit</title>
 </head>
 <body>
 
+</center>
 <div align="center">
     <form method="post">
         <table border="1" cellpadding="5">

@@ -70,7 +70,6 @@ public class CategoryDAO implements DAO<Category> {
             rowDeleted = statement.executeUpdate() > 0;
         }
         return rowDeleted;
-
     }
 }
 

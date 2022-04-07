@@ -55,7 +55,8 @@ public class BookServlet extends HttpServlet {
         }
     }
 
-    private void showCreateCateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException  {
+    private void showCreateCateForm(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException, SQLException  {
         RequestDispatcher rD = req.getRequestDispatcher("createCategory.jsp");
         rD.forward(req,resp);
     }
