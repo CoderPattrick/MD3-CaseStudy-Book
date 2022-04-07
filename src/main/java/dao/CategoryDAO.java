@@ -14,13 +14,10 @@ import static dao.SingletonConnection.getConnection;
 
 public class CategoryDAO implements DAO<Category> {
     public static final String getAllCategorySQL = "select * from theloai;";
-
     public static final String INSERT_CATEGORY = "insert into theloai(ten) value(?);";
     public static final String DELETE_CATEGORY = "delete from theloai where id = ?;";
     public static final String EDIT_CATEGORY= "update theloai set ten = ? where id = ?";
-
     public static final String Get_By_ID = "SELECT *FROM tacgia WHERE id =?";
-
 
     @Override
     public ArrayList<Category> getAll() throws SQLException {
@@ -33,7 +30,6 @@ public class CategoryDAO implements DAO<Category> {
         }
         return list;
     }
-
 
     @Override
     public Category getById(int id) throws SQLException {
@@ -77,7 +73,6 @@ public class CategoryDAO implements DAO<Category> {
         return rowUpdated;
     }
 
-
     @Override
     public boolean deleteRecord(int id) throws SQLException {
         boolean rowDeleted;
@@ -88,6 +83,7 @@ public class CategoryDAO implements DAO<Category> {
         }
         return rowDeleted;
     }
+
     public static ArrayList<Category> findAllByBookId(int id){
         ArrayList<Category> categories =new ArrayList<>();
         try (

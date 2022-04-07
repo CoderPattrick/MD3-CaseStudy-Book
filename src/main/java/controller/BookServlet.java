@@ -110,13 +110,23 @@ public class BookServlet extends HttpServlet {
     }
 
     //AUTHOR
-        //Forms
-    private void showUpdateAuthorInfoForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+    private void showUpdateAuthorInfoForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/edit.jsp");
         int id = Integer.parseInt(request.getParameter("id"));
         Author author = authorDAO.getById(id);
-        request.setAttribute("author",author);
-        requestDispatcher.forward(request,response);
+        request.setAttribute("author", author);
+        requestDispatcher.forward(request, response);
+    }
+    private void showListAuthorForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        RequestDispatcher rD = req.getRequestDispatcher("listAuthor.jsp");
+            ArrayList<Author> list = authorDAO.getAll();
+            req.setAttribute("listAuthor",list);
+            rD.forward(req,resp);
+
+    }
+    private void showAuthorByIdForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException  {
+        RequestDispatcher rD = req.getRequestDispatcher("authorById.jsp");
+        rD.forward(req,resp);
     }
     private void showInsertAuthorForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("author/create.jsp");
@@ -128,7 +138,16 @@ public class BookServlet extends HttpServlet {
         request.setAttribute("authorList", list);
         requestDispatcher.forward(request, response);
     }
-        //FUNCTION
+    private void getAuthorById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+            RequestDispatcher rD = req.getRequestDispatcher("authorById.jsp");
+            String result =req.getParameter("id");
+            int id = Integer.parseInt(result);
+            ArrayList<Book> listBook = bookDAO.getBookByIdAuthor(id);
+            Author author = authorDAO.getById(id);
+            req.setAttribute("author",author);
+            req.setAttribute("listBook",listBook);
+            rD.forward(req,resp);
+        }
     private void updateAuthorInfo(HttpServletRequest request, HttpServletResponse response)throws SQLException, IOException, ServletException{
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("ten");
