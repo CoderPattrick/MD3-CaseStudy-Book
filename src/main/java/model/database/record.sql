@@ -24,7 +24,7 @@ values('Trinh thám'),
        ('Sách tham khảo');
 
 
-# 7 record tacgia
+
 insert into tacgia (ten,namSinh,soTacPham,quocTich,linkWiki,avatar)
 values ('Haruki Murakami',1949,50,'Nhật Bản','https://en.wikipedia.org/wiki/Murakami_Haruki','https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Murakami_Haruki_%282009%29.jpg/800px-Murakami_Haruki_%282009%29.jpg'),
        ('Thomas Harris',1940,40,'Mỹ','https://en.wikipedia.org/wiki/Thomas_Harris','https://trangtrinhtham.files.wordpress.com/2021/02/thomas-harris.jpg'),
@@ -35,6 +35,7 @@ values ('Haruki Murakami',1949,50,'Nhật Bản','https://en.wikipedia.org/wiki/
        ('Stephenie Meyer',1973,70,'Mỹ','https://en.wikipedia.org/wiki/Stephenie_Meyer','https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Stephenie_Meyer_by_Gage_Skidmore.jpg/800px-Stephenie_Meyer_by_Gage_Skidmore.jpg'),
        ('George Raymond Richard Martin',1948,20,'Mỹ','https://en.wikipedia.org/wiki/George_R._R._Martin','https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Portrait_photoshoot_at_Worldcon_75%2C_Helsinki%2C_before_the_Hugo_Awards_%E2%80%93_George_R._R._Martin.jpg/');
 # tacgia chua biet (khong co link wiki)
+
 insert into tacgia(ten,quocTich,namSinh)
 value ('unknown','unknown',0);
 

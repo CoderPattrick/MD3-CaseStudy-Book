@@ -103,9 +103,14 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
 .idea/misc.xml
+<<<<<<< HEAD
 <<<<<<< HEAD
 /src/main/java/controller/SingletonConnection.java
 =======
 /src/main/java/dao/SingletonConnection.java
 >>>>>>> a1e6092d0ccdcfbf87a8b4ba66e82a4e3cc394f6
+=======
+/src/main/java/dao/SingletonConnection.java
+>>>>>>> master
