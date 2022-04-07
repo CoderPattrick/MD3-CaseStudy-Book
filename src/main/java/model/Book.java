@@ -25,6 +25,17 @@ public class Book {
     public Book() {
     }
 
+    public Book(long ISBNCode, String name, ArrayList<Category> categoryList, ArrayList<Author> authorList, int publishYear, int reprint, String summary, double price) {
+        this.ISBNCode = ISBNCode;
+        this.name = name;
+        this.categoryList = categoryList;
+        this.authorList = authorList;
+        this.publishYear = publishYear;
+        this.reprint = reprint;
+        this.summary = summary;
+        this.price = price;
+    }
+
     public Book(long ISBNCode, String name, ArrayList<Category> categoryList, ArrayList<Author> authorList, int publishYear, int reprint, String summary, String publisher, String publishLicense, String avatarURL, int viewCount, boolean isRecommended, boolean isBestSeller, double price, int soldQuantity, int inStock) {
         this.ISBNCode = ISBNCode;
         this.name = name;
