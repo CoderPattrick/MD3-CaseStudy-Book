@@ -21,6 +21,7 @@ public class AuthorDAO implements DAO<Author>{
         PreparedStatement pS = connection.prepareStatement(getAllAuthorSQL);
         ResultSet rS = pS.executeQuery();
         while (rS.next()){
+            int id = rS.getInt("id");
             String name = rS.getString("ten");
             int yearOfBirth = rS.getInt("namSinh");
             int yearOfDeath = rS.getInt("namMat");
@@ -28,7 +29,7 @@ public class AuthorDAO implements DAO<Author>{
             String country = rS.getString("quocTich");
             String wikiURL = rS.getString("linkWiki");
             String avatarURL = rS.getString("avatar");
-            list.add(new Author(name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL));
+            list.add(new Author(id,name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL));
         }
         return list;
     }
@@ -47,7 +48,7 @@ public class AuthorDAO implements DAO<Author>{
             String country = rS.getString("quocTich");
             String wikiURL = rS.getString("linkWiki");
             String avatarURL = rS.getString("avatar");
-            author=new Author(name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL);
+            author=new Author(id,name,yearOfBirth,yearOfDeath,numberOfBook,country,wikiURL,avatarURL);
         }
         return author;
     }

@@ -18,8 +18,9 @@ public class CategoryDAO implements DAO<Category> {
         PreparedStatement pS = connection.prepareStatement(getAllCategorySQL);
         ResultSet rS = pS.executeQuery();
         while (rS.next()) {
+            int id = rS.getInt("id");
             String name = rS.getString("ten");
-            list.add(new Category(name));
+            list.add(new Category(id,name));
         }
         return list;
     }

@@ -52,6 +52,9 @@ public class BookServlet extends HttpServlet {
                 case "getBooksByCategory":
                     showBooksByCategoryForm(req,resp);
                     break;
+                case "getNewBook":
+                    getNewBookForm(req,resp);
+                    break;
                 default:
                     break;
             }
@@ -84,6 +87,9 @@ public class BookServlet extends HttpServlet {
                 case  "getBooksByCategory":
                     showListBookByCategory(req, resp);
                     break;
+                case "getNewBook":
+                    getNewBook(req,resp);
+                    break;
             }
         }catch (ServletException e) {
             e.printStackTrace();
@@ -94,7 +100,7 @@ public class BookServlet extends HttpServlet {
         }
     }
 
-//Là người dùng tôi muốn
+//Là người d    ùng tôi muốn
 // khi xem chi tiết một tác giả
 // có thể xem được
 // danh sách các tác phẩm của tác giả đó
@@ -159,5 +165,53 @@ public class BookServlet extends HttpServlet {
         ArrayList<Book> books = bookDAO.getBookByIdCategory(id);
         req.setAttribute("listBook",books);
         dispatcher.forward(req,resp);
+    }
+
+    private void getNewBookForm (HttpServletRequest request ,HttpServletResponse response) throws ServletException, IOException, SQLException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("insertNewBook.jsp");
+        ArrayList<Category> newCatogories = categoryDAO.getAll();
+        ArrayList<Author> newAuthors = authorDAO.getAll();
+        request.setAttribute("categories",newCatogories);
+        request.setAttribute("authors",newAuthors);
+        dispatcher.forward(request,response);
+    }
+
+    private void getNewBook (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("insertNewBook.jsp");
+        String name = request.getParameter("name");
+        int publishYear =Integer.parseInt(request.getParameter("publishYear"));
+        int reprint = Integer.parseInt(request.getParameter("reprint"));
+        long IBSNCode = Long.parseLong(request.getParameter("ISBNCode"));
+        String summary = request.getParameter("summary");
+        String publisher = request.getParameter("publisher");
+        String publishLicense = request.getParameter("publishLicense");
+        String avatarURL = request.getParameter("avatarURL");
+        int view = Integer.parseInt(request.getParameter("viewCount"));
+        boolean isRecommended = Boolean.parseBoolean(request.getParameter("isRecommended"));
+        boolean isBestSeller = Boolean.parseBoolean(request.getParameter("isBestSeller"));
+        double price = Double.parseDouble(request.getParameter("price"));
+        int soldQuantity = Integer.parseInt(request.getParameter("soldQuantity"));
+        int inStock = Integer.parseInt(request.getParameter("inStock"));
+        String[] categoriesStr = request.getParameterValues("categories");
+        String[] authorsStr = request.getParameterValues("authors");
+        int [] categories = new int[categoriesStr.length];
+        ArrayList<Category> categoryArrayList = new ArrayList<>();
+        for (int i = 0; i < categories.length; i++) {
+            categories[i] = Integer.parseInt(categoriesStr[i]);
+            categoryArrayList.add(categoryDAO.getById(categories[i]));
+        }
+        int[] authors = new int[authorsStr.length];
+        ArrayList<Author>authorArrayList =new ArrayList<>();
+        for (int i = 0; i < authors.length; i++) {
+            authors[i]= Integer.parseInt(authorsStr[i]);
+            authorArrayList.add(authorDAO.getById(authors[i]));
+        }
+        Book newBook = new Book(IBSNCode,name,categoryArrayList,authorArrayList,publishYear,reprint,summary,publisher,publishLicense,avatarURL,view,isRecommended,isBestSeller,price,soldQuantity,inStock);
+        bookDAO.insertIntoDB(newBook);
+        ArrayList<Category> newCatogories = categoryDAO.getAll();
+        ArrayList<Author> newAuthors = authorDAO.getAll();
+        request.setAttribute("categories",newCatogories);
+        request.setAttribute("authors",newAuthors);
+        dispatcher.forward(request,response);
     }
 }
