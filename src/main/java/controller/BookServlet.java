@@ -45,7 +45,9 @@ public class BookServlet extends HttpServlet {
                 case "getNewBook":
                     getNewBookForm(request ,response);
                     break;
-
+                case "getDetailsBook":
+                    seeDetailsBook(request,response);
+                    break;
                 //AUTHOR
                 case "getAllAuthor":
                     showAuthorListForm(request, response);
@@ -372,6 +374,15 @@ public class BookServlet extends HttpServlet {
         ArrayList<Author> newAuthors = authorDAO.getAll();
         request.setAttribute("categories",newCatogories);
         request.setAttribute("authors",newAuthors);
+        dispatcher.forward(request,response);
+    }
+    private void seeDetailsBook (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("seeDetailsBook.jsp");
+        int id = Integer.parseInt(request.getParameter("id"));
+        Book newBook = bookDAO.getById(id);
+        ArrayList<Book> books = new ArrayList<Book>();
+        books.add(newBook);
+        request.setAttribute("book1",books);
         dispatcher.forward(request,response);
     }
 }

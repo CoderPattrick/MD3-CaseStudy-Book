@@ -24,6 +24,7 @@
         <th>Reprint</th>
         <th>Summary</th>
         <th>Price</th>
+        <th>See Details</th>
     </tr>
     <c:forEach items="${listBook}" var="book">
         <tr>
@@ -42,6 +43,9 @@
             <td>${book.getReprint()}</td>
             <td>${book.getSummary()}</td>
             <td>${book.getPrice()}</td>
+            <td>
+                <a href="/BookServlet?action=getDetailsBook&id=${book.getId()}">Chi tiết</a>
+            </td>
         </tr>
     </c:forEach>
 </table>
