@@ -39,7 +39,7 @@
         <td>${author.getWikiURL()}</td>
         <td>
             <a href="/BookServlet?action=updateAuthorInfo&id=${author.getId()}">Edit</a>
-            <a href="/BookServlet?action=deleteAuthor&id=${author.getId()}">Delete</a>
+            <a href="/BookServlet?action=deleteAuthorById&id=${author.getId()}">Delete</a>
         </td>
     </tr>
 </c:forEach>
