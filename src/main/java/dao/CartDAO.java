@@ -9,11 +9,14 @@ import model.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class CartDAO implements DAO<Cart> {
     public static final String SELECT_ALL_CART = "select * from giohang;";
+    public static final String ADD_NEW_CART = "INSERT INTO giohang (cartCode, orderDate, id_khach) VALUES (?,?,?);";
+    public static final String ADD_NEW_CART_DETAIL = "INSERT INTO chitietgiohang(id_giohang, id_sach, soLuongSach) VALUES (?,?,?);";
     UserDAO userDAO = new UserDAO();
 
     @Override
@@ -40,8 +43,22 @@ public class CartDAO implements DAO<Cart> {
     }
 
     @Override
-    public boolean insertIntoDB(Cart object) throws SQLException {
-        return false;
+    public boolean insertIntoDB(Cart object) {
+        int idCart=0;
+        try {
+            PreparedStatement statement = connection.prepareStatement(ADD_NEW_CART, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, object.getCartCode());
+            statement.setString(2,object.getOrderDateTime());
+            statement.setInt(3,object.getUser().getId());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            while (resultSet.next()){
+                idCart = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
@@ -52,5 +69,8 @@ public class CartDAO implements DAO<Cart> {
     @Override
     public boolean deleteRecord(int id) throws SQLException {
         return false;
+    }
+    public void insertBookToCart (int idCart){
+
     }
 }
