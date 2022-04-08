@@ -12,7 +12,10 @@
 </head>
 <body>
 <form method="post">
-    ID Category to delete: <input type="number" name="id" id="id" size="45px"><input type="submit" value="Delete">
+    <h3>Are you sure you want to delete this category?</h3>
+    <input type="hidden" name="id" value ="<c:out value='${category.id}'/>"/>
+    <input type="submit" value="Delete">
+    <a href="BookServlet?action=getAllCategory">Back to author list</a>
 </form>
 </body>
 </html>

@@ -12,6 +12,22 @@
     <title>List Category</title>
 </head>
 <body>
+<table>
+    <tr>
+        <th>
+            <a href="/BookServlet">Home Page</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllAuthor">Show all author</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllBook">Show all book</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllCategory">Show all category</a>
+        </th>
+    </tr>
+</table>
 <h2>List Category</h2>
 <h2>
     <a href="/BookServlet?action=createCategory">Add new Category</a>
@@ -29,8 +45,9 @@
             </td>
             <td>
                 <a href="/BookServlet?action=editCategory&id=${category.id}">Edit</a>
+                <a href="/BookServlet?action=deleteCategoryById&id=${category.id}">Delete</a>
+            </td>
 
-          </td>
         </tr>
     </c:forEach>
 </table>
