@@ -15,7 +15,7 @@
 <table>
     <tr>
         <th>
-            <a href="/BookServlet?action=homePage">Home Page</a>
+            <a href="/BookServlet">Home Page</a>
         </th>
         <th>
             <a href="/BookServlet?action=getAllAuthor">Show all author</a>
@@ -26,14 +26,7 @@
         <th>
             <a href="/BookServlet?action=getAllCategory">Show all category</a>
         </th>
-        <th>
-            <input type="number" name="authorId" id="authorId" size="45px"><input type="submit" value="Search">
-            <a href="/BookServlet?action=getAuthorById&id=">Search author by ID</a>
-        </th>
-        <th>
-            <input type="number" name="bookId" id="bookId" size="45px"><input type="submit" value="Search">
-            <a href="/BookServlet?action=getBookById&id=">Search book by ID</a>
-        </th>
+
     </tr>
 </table>
 </body>

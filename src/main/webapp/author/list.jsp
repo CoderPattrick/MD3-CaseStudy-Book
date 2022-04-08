@@ -18,6 +18,11 @@
 </head>
 <body>
 <h2>List Author</h2>
+<th>
+
+    <a href="/BookServlet?action=getAuthorById&id=${id}">Search author by ID</a>
+    <input type="number" name="authorId" id="authorId" size="45px"><input type="submit" value="Search">
+</th>
 <table border="1">
     <tr>
         <th></th>
@@ -44,6 +49,6 @@
     </tr>
 </c:forEach>
 </table>
-<a href="/BookServlet?action=create">Add new Author</a>
+<a href="/BookServlet?action=insertAuthor">Add new Author</a>
 </body>
 </html>
