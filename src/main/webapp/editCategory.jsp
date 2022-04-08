@@ -5,28 +5,22 @@
   Time: 3:42 CH
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-    <title>Edit</title>
+    <title>Edit Category</title>
 </head>
 <body>
+<h2>Edit Category</h2>
 
-</center>
-<div align="center">
     <form method="post">
-        <table border="1" cellpadding="5">
-            <caption>
-                <h2>
-                    Edit Category
-                </h2>
-            </caption>
+        <table>
+
             <tr>
-                <th>Category Name:</th>
+                <th>Category name:</th>
                 <td>
-                    <input type="text" name="ten" size="45"/>
+                    <input type="text" name="ten" value="<c:out value ='${category.name}'/>">
                 </td>
             </tr>
             <tr>
@@ -34,8 +28,12 @@
                     <input type="submit" value="Save"/>
                 </td>
             </tr>
+            <tr>
+                <a href="BookServlet?action=getAllCategory">Back to category list</a>
+            </tr>
+
         </table>
     </form>
-</div>
+
 </body>
 </html>
