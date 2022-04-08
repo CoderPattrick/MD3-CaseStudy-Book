@@ -7,11 +7,18 @@ public class User {
     private String pass ;
     private boolean role;
 
-    public User(String name) {
-        this.name = name;
+    public User() {
     }
 
-    public User() {
+    public User(int id, String acc, String pass) {
+        this.id = id;
+        this.acc = acc;
+        this.pass = pass;
+    }
+
+    public User(String acc, String pass) {
+        this.acc = acc;
+        this.pass = pass;
     }
 
     public User(int id, String name, String acc, String pass, boolean role) {
