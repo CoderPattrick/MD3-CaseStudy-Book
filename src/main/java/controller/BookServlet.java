@@ -55,6 +55,9 @@ public class BookServlet extends HttpServlet {
                 case "deleteBookById2":
                     deleteBookById(request, response);
                     break;
+                case "showEditBookForm":
+                    showEditBookForm(request, response);
+                    break;
                 case "getBooksByCategory":
                     getBookByIdCategory(request,response);
                 //AUTHOR
@@ -139,6 +142,9 @@ public class BookServlet extends HttpServlet {
                     break;
                 case "getBookById":
                     getBookById(request, response);
+                    break;
+                case "showEditBookForm":
+                    updateBookInfo(request, response);
                     break;
                 //CAREGORY
                 case "deleteCategoryById":
@@ -399,6 +405,40 @@ public class BookServlet extends HttpServlet {
         Book book = bookDAO.getById(id);
         req.setAttribute("book",book);
         rD.forward(req,resp);
+    }
+    private void showEditBookForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException  {
+        RequestDispatcher rD = req.getRequestDispatcher("editBook.jsp");
+        int id = Integer.parseInt(req.getParameter("id"));
+        Book book = bookDAO.getById(id);
+        ArrayList<Category> categoryList = categoryDAO.getAll();
+        ArrayList<Author> authorList = authorDAO.getAll();
+        req.setAttribute("book",book);
+        req.setAttribute("categoryList",categoryList);
+        req.setAttribute("authorList",authorList);
+        rD.forward(req,resp);
+    }
+    private void updateBookInfo(HttpServletRequest request, HttpServletResponse response)throws SQLException, IOException, ServletException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        long isbn = Integer.parseInt(request.getParameter("ISBN"));
+        String[] categories = request.getParameterValues("category");
+        ArrayList<Category> categoryArrayList = new ArrayList<>();
+        for (int i = 0; i < categories.length; i++) {
+            int cateID = Integer.parseInt(categories[i]);
+            categoryArrayList.add(categoryDAO.getById(cateID));
+        }
+        String[] authors = request.getParameterValues("author");
+        ArrayList<Author> authorArrayList = new ArrayList<>();
+        for (int i = 0; i < authors.length; i++) {
+            int authID = Integer.parseInt(authors[i]);
+            authorArrayList.add(authorDAO.getById(authID));
+        }
+        int publishYear = Integer.parseInt(request.getParameter("publishYear"));
+        int reprint = Integer.parseInt(request.getParameter("reprint"));
+        String summary = request.getParameter("summary");
+        double price = Double.parseDouble(request.getParameter("price"));
+        Book book = new Book(id, isbn, name, categoryArrayList, authorArrayList, publishYear, reprint, summary, price);
+        bookDAO.editRecord(book);
     }
     public void getBookByIdCategory (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("BooksByCategory.jsp");
