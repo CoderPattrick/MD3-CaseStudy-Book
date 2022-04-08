@@ -48,6 +48,12 @@ public class BookServlet extends HttpServlet {
                 case "getDetailsBook":
                     seeDetailsBook(request,response);
                     break;
+                case "getBookById":
+                    showBookByIdForm(request, response);
+                    break;
+                case "deleteBookById2":
+                    deleteBookById(request, response);
+                    break;
                 //AUTHOR
                 case "getAllAuthor":
                     showAuthorListForm(request, response);
@@ -128,6 +134,9 @@ public class BookServlet extends HttpServlet {
                     break;
                 case "getNewBook":
                     getNewBook(request, response);
+                    break;
+                case "getBookById":
+                    getBookById(request, response);
                     break;
                 //CAREGORY
                 case "deleteCategoryById":
@@ -382,8 +391,21 @@ public class BookServlet extends HttpServlet {
         Book newBook = bookDAO.getById(id);
         ArrayList<Book> books = new ArrayList<Book>();
         books.add(newBook);
-        request.setAttribute("book1",books);
-        dispatcher.forward(request,response);
+        request.setAttribute("book1", books);
+        dispatcher.forward(request, response);
+    }
+    public void showBookByIdForm(HttpServletRequest req ,HttpServletResponse resp) throws ServletException, IOException, SQLException
+    {
+        RequestDispatcher rD = req.getRequestDispatcher("bookById.jsp");
+        rD.forward(req,resp);
+    }
+    public void getBookById(HttpServletRequest req ,HttpServletResponse resp) throws ServletException, IOException, SQLException
+    {
+        RequestDispatcher rD = req.getRequestDispatcher("bookById.jsp");
+        int id = Integer.parseInt(req.getParameter("id"));
+        Book book = bookDAO.getById(id);
+        req.setAttribute("book",book);
+        rD.forward(req,resp);
     }
 
 }
