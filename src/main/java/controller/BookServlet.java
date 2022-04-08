@@ -45,6 +45,9 @@ public class BookServlet extends HttpServlet {
                 case "getNewBook":
                     getNewBookForm(request ,response);
                     break;
+                case "getDetailsBook":
+                    seeDetailsBook(request,response);
+                    break;
                 case "getBookById":
                     showBookByIdForm(request, response);
                     break;
@@ -54,6 +57,8 @@ public class BookServlet extends HttpServlet {
                 case "showEditBookForm":
                     showEditBookForm(request, response);
                     break;
+                case "getBooksByCategory":
+                    getBookByIdCategory(request,response);
                 //AUTHOR
                 case "getAllAuthor":
                     showAuthorListForm(request, response);
@@ -388,6 +393,15 @@ public class BookServlet extends HttpServlet {
         request.setAttribute("authors",newAuthors);
         dispatcher.forward(request,response);
     }
+    private void seeDetailsBook (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("seeDetailsBook.jsp");
+        int id = Integer.parseInt(request.getParameter("id"));
+        Book newBook = bookDAO.getById(id);
+        ArrayList<Book> books = new ArrayList<Book>();
+        books.add(newBook);
+        request.setAttribute("book1", books);
+        dispatcher.forward(request, response);
+    }
     public void showBookByIdForm(HttpServletRequest req ,HttpServletResponse resp) throws ServletException, IOException, SQLException
     {
         RequestDispatcher rD = req.getRequestDispatcher("bookById.jsp");
@@ -412,7 +426,7 @@ public class BookServlet extends HttpServlet {
         req.setAttribute("authorList",authorList);
         rD.forward(req,resp);
     }
-    private void updateBookInfo(HttpServletRequest request, HttpServletResponse response)throws SQLException, IOException, ServletException{
+    private void updateBookInfo(HttpServletRequest request, HttpServletResponse response)throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         long isbn = Integer.parseInt(request.getParameter("ISBN"));
@@ -423,17 +437,24 @@ public class BookServlet extends HttpServlet {
             categoryArrayList.add(categoryDAO.getById(cateID));
         }
         String[] authors = request.getParameterValues("author");
-        ArrayList<Author>authorArrayList =new ArrayList<>();
+        ArrayList<Author> authorArrayList = new ArrayList<>();
         for (int i = 0; i < authors.length; i++) {
-            int authID= Integer.parseInt(authors[i]);
+            int authID = Integer.parseInt(authors[i]);
             authorArrayList.add(authorDAO.getById(authID));
         }
-        int publishYear =Integer.parseInt(request.getParameter("publishYear"));
+        int publishYear = Integer.parseInt(request.getParameter("publishYear"));
         int reprint = Integer.parseInt(request.getParameter("reprint"));
         String summary = request.getParameter("summary");
         double price = Double.parseDouble(request.getParameter("price"));
-        Book book = new Book(id,isbn,name,categoryArrayList,authorArrayList,publishYear,reprint,summary,price);
+        Book book = new Book(id, isbn, name, categoryArrayList, authorArrayList, publishYear, reprint, summary, price);
         bookDAO.editRecord(book);
+    }
+    public void getBookByIdCategory (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("BooksByCategory.jsp");
+        int id  =Integer.parseInt(request.getParameter("id"));
+        ArrayList<Book> books = bookDAO.getBookByIdCategory(id);
+        request.setAttribute("books",books);
+        dispatcher.forward(request,response);
     }
 }
 
