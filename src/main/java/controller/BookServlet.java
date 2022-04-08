@@ -432,7 +432,7 @@ public class BookServlet extends HttpServlet {
         int reprint = Integer.parseInt(request.getParameter("reprint"));
         String summary = request.getParameter("summary");
         double price = Double.parseDouble(request.getParameter("price"));
-        Book book = new Book(isbn,name,categoryArrayList,authorArrayList,publishYear,reprint,summary,price);
+        Book book = new Book(id,isbn,name,categoryArrayList,authorArrayList,publishYear,reprint,summary,price);
         bookDAO.editRecord(book);
     }
 }

@@ -25,7 +25,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(long ISBNCode, String name, ArrayList<Category> categoryList, ArrayList<Author> authorList, int publishYear, int reprint, String summary, double price) {
+    public Book(int id, long ISBNCode, String name, ArrayList<Category> categoryList, ArrayList<Author> authorList, int publishYear, int reprint, String summary, double price) {
+        this.id = id;
         this.ISBNCode = ISBNCode;
         this.name = name;
         this.categoryList = categoryList;

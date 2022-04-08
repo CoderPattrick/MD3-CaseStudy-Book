@@ -22,6 +22,9 @@ public class BookDAO implements DAO<Book> {
     public static final String GET_BY_ID_CATEGORY = "SELECT *FROM sach_theloai WHERE idTheLoai=?;";
     public static final String GET_BY_ID_AUTHOR = "SELECT *FROM sach_tacgia WHERE idTacGia=?;";
     public static final String AddNewBook = "INSERT INTO sach(ten, namXuatBan, taiBanLanThu, maISBN, moTa, NXB, GPXB, avatar, view, sachDeCu, sachHot, giaSach) values (?,?,?,?,?,?,?,?,?,?,?,?);";
+    public static final String UPDATE_BOOK = "update sach set maISBN = ? , ten= ? , namXuatBan = ? , taiBanLanThu = ? , moTa = ? , giaSach = ? where id = ?;";
+    public static final String UPDATE_BOOK_AUTHOR = "insert into sach_tacgia (idSach, idTacGia) VALUES (?,?);";
+    public static final String UPDATE_BOOK_CATEGORY = "insert into sach_theloai(idSach, idTheLoai) VALUES (?,?);";
     AuthorDAO authorDAO = new AuthorDAO();
     CategoryDAO categoryDAO = new CategoryDAO();
     static BookDAO bookDAO = new BookDAO();
@@ -146,7 +149,39 @@ public class BookDAO implements DAO<Book> {
 
     @Override
     public boolean editRecord(Book object) throws SQLException {
-        return false;
+        long isbn = object.getISBNCode();
+        String name = object.getName();
+        ArrayList<Category> categories = object.getCategoryList();
+        ArrayList<Author> authors = object.getAuthorList();
+        int publishYear = object.getPublishYear();
+        int reprint = object.getReprint();
+        String summary = object.getSummary();
+        double price = object.getPrice();
+        int id = object.getId();
+        PreparedStatement pS = connection.prepareStatement(UPDATE_BOOK);
+        pS.setLong(1,isbn);
+        pS.setString(2,name);
+        pS.setInt(3,publishYear);
+        pS.setInt(4,reprint);
+        pS.setString(5,summary);
+        pS.setDouble(6,price);
+        pS.setInt(7,id);
+        pS.execute();
+        for (Category c:categories
+             ) {
+            PreparedStatement pS2 = connection.prepareStatement(UPDATE_BOOK_CATEGORY);
+            pS2.setInt(1,id);
+            pS2.setInt(2,c.getId());
+            pS2.execute();
+        }
+        for (Author a:authors
+             ) {
+            PreparedStatement pS2 = connection.prepareStatement(UPDATE_BOOK_AUTHOR);
+            pS2.setInt(1,id);
+            pS2.setInt(2,a.getId());
+            pS2.execute();
+        }
+        return true;
     }
 
     @Override
