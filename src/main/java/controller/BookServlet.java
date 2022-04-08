@@ -60,6 +60,13 @@ public class BookServlet extends HttpServlet {
                     break;
                 case "getBooksByCategory":
                     getBookByIdCategory(request,response);
+                    break;
+                case "getBestSeller":
+                    getBestSeller(request,response);
+                    break;
+                case "getRecommend":
+                    getRecommend(request,response);
+                    break;
                 //AUTHOR
                 case "getAllAuthor":
                     showAuthorListForm(request, response);
@@ -146,9 +153,10 @@ public class BookServlet extends HttpServlet {
                 case "showEditBookForm":
                     updateBookInfo(request, response);
                     break;
+
                 //CAREGORY
                 case "deleteCategoryById":
-                    deleteCategoryById(request, response);
+                    deleteCategoryById2(request, response);
                     break;
                 case "createCategory":
                     createCategory(request, response);
@@ -255,9 +263,6 @@ public class BookServlet extends HttpServlet {
         requestDispatcher.forward(request,response);
     }
 
-
-
-
     //CATEGORY
     private void showListCategoryForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("listCategory.jsp");
@@ -299,6 +304,27 @@ public class BookServlet extends HttpServlet {
     }
 
     //BOOK
+    private void getBestSeller(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+        ArrayList<Book> list = bookDAO.getAll();
+        for (Book book : list){
+            if (!book.isBestSeller())
+                list.remove(book);
+        }
+        request.setAttribute("listBook",list);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("listBook.jsp");
+        requestDispatcher.forward(request,response);
+    }
+    private void getRecommend(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+        ArrayList<Book> list = bookDAO.getAll();
+        for (Book book : list){
+            if (!book.isRecommended())
+                list.remove(book);
+        }
+        request.setAttribute("listBook",list);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("listBook.jsp");
+        requestDispatcher.forward(request,response);
+    }
+
 
 
     private void showDeleteBookForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
@@ -319,6 +345,14 @@ public class BookServlet extends HttpServlet {
         String result =req.getParameter("id");
         int id = Integer.parseInt(result);
         categoryDAO.deleteRecord(id);
+    }
+    private void deleteCategoryById2(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException, SQLException{
+        int id = Integer.parseInt(request.getParameter("id"));
+        categoryDAO.deleteRecord(id);
+        ArrayList<Category> list = categoryDAO.getAll();
+        request.setAttribute("listCategory", list);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("listCategory.jsp");
+        requestDispatcher.forward(request,response);
     }
     private void deleteAuthorById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         String result =req.getParameter("id");

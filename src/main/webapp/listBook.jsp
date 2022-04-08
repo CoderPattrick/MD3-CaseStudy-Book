@@ -12,7 +12,25 @@
     <title>List Book</title>
 </head>
 <body>
+<table>
+    <tr>
+        <th>
+            <a href="/BookServlet">Home Page</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllAuthor">Show all author</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllBook">Show all book</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllCategory">Show all category</a>
+        </th>
+    </tr>
+</table>
 <h2>List Book</h2>
+<a href="/BookServlet?action=getBestSeller">Show best sellers</a>
+<a href="/BookServlet?action=getRecommend">Recommended for you</a>
 <table border="1">
     <tr>
         <th></th>
