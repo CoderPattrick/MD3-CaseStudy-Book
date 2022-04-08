@@ -12,9 +12,26 @@
     <title>Edit Author infomation</title>
 </head>
 <body>
+<table>
+    <tr>
+        <th>
+            <a href="/BookServlet">Home Page</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllAuthor">Show all author</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllBook">Show all book</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllCategory">Show all category</a>
+        </th>
+    </tr>
+</table>
 <h2>Edit Author</h2>
 <div align="center">
     <form method="post">
+
         <table>
             <c:if test="${author != null}">
                 <input type="hidden" name="id" value ="<c:out value='${author.id}'/>"/>

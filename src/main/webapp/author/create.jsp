@@ -11,54 +11,70 @@
     <title>Add new Author</title>
 </head>
 <body>
+<table>
+    <tr>
+        <th>
+            <a href="/BookServlet">Home Page</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllAuthor">Show all author</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllBook">Show all book</a>
+        </th>
+        <th>
+            <a href="/BookServlet?action=getAllCategory">Show all category</a>
+        </th>
+    </tr>
+</table>
 <h2>Add new Author</h2>
 <div align="center">
     <form method="post">
+
         <table>
             <c:if test="${author != null}">
-                <input type="hidden" name="id" value ="<c:out value='${author.id}'/>"/>
+                <input type="hidden" name="id" />
             </c:if>
             <tr>
                 <th>Author name:</th>
                 <td>
-                    <input type="text" name="ten" value="<c:out value ='${author.name}'/>">
+                    <input type="text" name="ten" />
                 </td>
             </tr>
             <tr>
                 <th>Year of birth:</th>
                 <td>
-                    <input type="number" name="namSinh" value="<c:out value='${author.yearOfBirth}' />"
-                    />
+                    <input type="number" name="namSinh" />
                 </td>
             </tr>
             <tr>
                 <th>Year of death:</th>
                 <td>
-                    <input type="number" name="namMat" value="<c:out value ='${author.yearOfDeath}'/>">
+                    <input type="number" name="namMat" />
                 </td>
             </tr>
             <tr>
                 <th>Number of book written:</th>
                 <td>
-                    <input type="number" name="soTacPham" value="<c:out value ='${author.numberOfBook}'/>">
+                    <input type="number" name="soTacPham" />
                 </td>
             </tr>
             <tr>
                 <th>Nationality:</th>
                 <td>
-                    <input type="text" name="quocTich" value="<c:out value ='${author.country}'/>">
+                    <input type="text" name="quocTich" />
                 </td>
             </tr>
             <tr>
                 <th>Wiki URL:</th>
                 <td>
-                    <input type="text" name="linkWiki" value="<c:out value ='${author.wikiURL}'/>">
+                    <input type="text" name="linkWiki" />
                 </td>
             </tr>
             <tr>
                 <th>Avatar URL:</th>
                 <td>
-                    <input type="text" name="avatar" value="<c:out value ='${author.avatarURL}'/>">
+                    <input type="text" name="avatar" />
                 </td>
             </tr>
             <tr>

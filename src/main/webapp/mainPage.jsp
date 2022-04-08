@@ -26,7 +26,6 @@
         <th>
             <a href="/BookServlet?action=getAllCategory">Show all category</a>
         </th>
-
     </tr>
 </table>
 </body>
