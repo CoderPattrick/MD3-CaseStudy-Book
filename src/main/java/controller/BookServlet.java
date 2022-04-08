@@ -311,9 +311,16 @@ public class BookServlet extends HttpServlet {
     //BOOK
     private void getBestSeller(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
         ArrayList<Book> list = bookDAO.getAll();
-        for (Book book : list){
-            if (!book.isBestSeller())
+        int cnt = 0;
+//        for (Book book : list){
+//            if (!book.isBestSeller())
+//                list.remove(book);
+//        }
+        while(cnt < list.size()){
+            Book book = list.get(cnt);
+            if(!book.isBestSeller())
                 list.remove(book);
+            else cnt++;
         }
         request.setAttribute("listBook",list);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("listBook.jsp");
@@ -321,9 +328,16 @@ public class BookServlet extends HttpServlet {
     }
     private void getRecommend(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
         ArrayList<Book> list = bookDAO.getAll();
-        for (Book book : list){
-            if (!book.isRecommended())
+        int cnt = 0;
+//        for (Book book : list){
+//            if (!book.isRecommended())
+//                list.remove(book);
+//        }
+        while(cnt < list.size()){
+            Book book = list.get(cnt);
+            if(!book.isRecommended())
                 list.remove(book);
+            else cnt++;
         }
         request.setAttribute("listBook",list);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("listBook.jsp");
