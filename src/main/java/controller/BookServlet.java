@@ -192,6 +192,7 @@ public class BookServlet extends HttpServlet {
         request.setAttribute("authorList", list);
         requestDispatcher.forward(request, response);
     }
+
     private void getAuthorById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
             RequestDispatcher rD = req.getRequestDispatcher("authorById.jsp");
             String result =req.getParameter("id");
