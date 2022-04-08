@@ -1,11 +1,11 @@
 package dao;
 
-import model.Author;
-import model.Cart;
+import model.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class CartDAO implements DAO<Cart> {
@@ -13,14 +13,6 @@ public class CartDAO implements DAO<Cart> {
 
     @Override
     public ArrayList<Cart> getAll() throws SQLException {
-        ArrayList<Author> list = new ArrayList<>();
-        PreparedStatement pS = connection.prepareStatement(SELECT_ALL_CART);
-        ResultSet rS = pS.executeQuery();
-        while (rS.next()) {
-
-            list.add(new Author());
-        }
-
         return null;
     }
 

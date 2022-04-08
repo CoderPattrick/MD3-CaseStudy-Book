@@ -1,6 +1,7 @@
 package dao;
 
 import model.Author;
+import model.Book;
 import model.Category;
 
 import java.sql.Connection;
@@ -16,8 +17,10 @@ public class CategoryDAO implements DAO<Category> {
     public static final String getAllCategorySQL = "select * from theloai;";
     public static final String INSERT_CATEGORY = "insert into theloai(ten) value(?);";
     public static final String DELETE_CATEGORY = "delete from theloai where id = ?;";
+    public static final String DELETE_CATEGORY_BOOK = "delete from sach_theloai where idTheLoai = ?;";
     public static final String EDIT_CATEGORY= "update theloai set ten = ? where id = ?";
     public static final String Get_By_ID = "SELECT *FROM tacgia WHERE id =?";
+
 
     @Override
     public ArrayList<Category> getAll() throws SQLException {
@@ -25,8 +28,9 @@ public class CategoryDAO implements DAO<Category> {
         PreparedStatement pS = connection.prepareStatement(getAllCategorySQL);
         ResultSet rS = pS.executeQuery();
         while (rS.next()) {
+            int id = rS.getInt("id");
             String name = rS.getString("ten");
-            list.add(new Category(name));
+            list.add(new Category(id,name));
         }
         return list;
     }
@@ -60,21 +64,27 @@ public class CategoryDAO implements DAO<Category> {
     @Override
     public boolean editRecord(Category category) throws SQLException {
         boolean rowUpdated;
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(EDIT_CATEGORY);) {
+
+        try (PreparedStatement statement = connection.prepareStatement(EDIT_CATEGORY)) {
             statement.setString(1, category.getName());
-            rowUpdated = statement.executeUpdate() > 0;
+            statement.setInt(2,category.getId());
+            rowUpdated = statement.execute();
         }
         return rowUpdated;
     }
 
+
     @Override
     public boolean deleteRecord(int id) throws SQLException {
-        boolean rowDelete;
-        PreparedStatement pS = connection.prepareStatement(DELETE_CATEGORY);
+        PreparedStatement pS = connection.prepareStatement(DELETE_CATEGORY_BOOK);
+        PreparedStatement pS2 = connection.prepareStatement(DELETE_CATEGORY);
+
         pS.setInt(1,id);
-        rowDelete = pS.executeUpdate() > 0;
-        return rowDelete;
+        pS2.setInt(1,id);
+        pS.execute();
+        pS2.execute();
+
+        return true;
     }
 
     public static ArrayList<Category> findAllByBookId(int id){
@@ -95,6 +105,7 @@ public class CategoryDAO implements DAO<Category> {
         }
         return categories;
     }
+
 }
 
 

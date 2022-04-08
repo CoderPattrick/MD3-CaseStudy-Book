@@ -13,13 +13,20 @@
 </head>
 <body>
 <h2>List Category</h2>
+<h2>
+    <a href="/author?action=createCategory">Add new Category</a>
+</h2>
 <table border="1">
     <tr>
         <th>Category</th>
+        <th>Action</th>
     </tr>
     <c:forEach items="${listCategory}" var="category">
         <tr>
-            <td>${category.getName()}</td>
+            <td>${category.name}</td>
+            <td>
+                <a href="/author?action=editCategory&id=${category.id}">Edit</a>
+            </td>
         </tr>
     </c:forEach>
 </table>
