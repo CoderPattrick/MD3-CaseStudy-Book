@@ -19,7 +19,9 @@
     </tr>
     <c:forEach items="${listCategory}" var="category">
         <tr>
-            <td>${category.getName()}</td>
+            <td>
+                    <a href="/BookServlet?action=showBookByIdCategory&id=${category.getId()}"> ${category.getName()}</a>
+            </td>
         </tr>
     </c:forEach>
 </table>
