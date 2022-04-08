@@ -1,6 +1,10 @@
 package dao;
 
+import model.Author;
+import model.Cart;
+import model.User;
 import model.*;
+
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,10 +14,24 @@ import java.util.ArrayList;
 
 public class CartDAO implements DAO<Cart> {
     public static final String SELECT_ALL_CART = "select * from giohang;";
+    UserDAO userDAO = new UserDAO();
 
     @Override
     public ArrayList<Cart> getAll() throws SQLException {
-        return null;
+        ArrayList<Cart> list = new ArrayList<>();
+        PreparedStatement pS = connection.prepareStatement(SELECT_ALL_CART);
+        ResultSet rS = pS.executeQuery();
+        while (rS.next()) {
+            int id = rS.getInt("id");
+            String cartCode = rS.getString("cartCode");
+            String date =rS.getString("orderDate");
+            int idCustomer = rS.getInt("id_khach");
+            User user= userDAO.getById(idCustomer);
+            Cart cart = new Cart(cartCode,date,user);
+            list.add(cart);
+        }
+
+        return list;
     }
 
     @Override

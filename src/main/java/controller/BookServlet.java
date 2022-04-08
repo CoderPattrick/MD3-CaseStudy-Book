@@ -1,5 +1,7 @@
 package controller;
 
+import dao.*;
+import model.*;
 import dao.AuthorDAO;
 import dao.BookDAO;
 import dao.CategoryDAO;
@@ -7,7 +9,6 @@ import model.Author;
 import model.Book;
 import model.Cart;
 import model.Category;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +26,8 @@ public class BookServlet extends HttpServlet {
     AuthorDAO authorDAO = new AuthorDAO();
     CategoryDAO categoryDAO = new CategoryDAO();
     BookDAO bookDAO = new BookDAO();
-
+    UserDAO userDAO = new UserDAO();
+    CartDAO cartDAO =new CartDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -86,20 +88,23 @@ public class BookServlet extends HttpServlet {
                 case "getAuthorById":
                     showAuthorByIdForm(request, response);
                     break;
-
-                    //CATEGORY
-                    case "getAllCategory":
-                        showListCategoryForm(request, response);
-                        break;
-                    case "deleteCategoryById":
-                        showDeleteCategoryForm(request, response);
-                        break;
-                    case "createCategory":
-                        showCreateCateForm(request, response);
-                        break;
-                    case "editCategory":
-                        showEditCateForm(request, response);
-                        break;
+                //CATEGORY
+                case "getAllCategory":
+                    showListCategoryForm(request, response);
+                    break;
+                case "deleteCategoryById":
+                    showDeleteCategoryForm(request, response);
+                    break;
+                case "createCategoryById":
+                    showCreateCateForm(request, response);
+                    break;
+                case "editCategory":
+                    showEditCateForm(request, response);
+                    break;
+//                    Cart
+                case "getAllCarts":
+                    showListCartsForm(request,response);
+                    break;
                 default:
                     showMainPage(request,response);
                     break;
@@ -480,6 +485,14 @@ public class BookServlet extends HttpServlet {
         int id  =Integer.parseInt(request.getParameter("id"));
         ArrayList<Book> books = bookDAO.getBookByIdCategory(id);
         request.setAttribute("books",books);
+        dispatcher.forward(request,response);
+    }
+
+//    USER
+    public void showListCartsForm (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
+        RequestDispatcher dispatcher= request.getRequestDispatcher("listCart.jsp");
+        ArrayList<Cart> carts = cartDAO.getAll();
+        request.setAttribute("listCarts",carts);
         dispatcher.forward(request,response);
     }
 }

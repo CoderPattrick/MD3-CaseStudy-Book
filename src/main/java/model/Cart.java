@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 public class Cart {
     private int id;
     private String cartCode;
-    private LocalDateTime orderDateTime;
+    private String orderDateTime;
     private User user;
 
-    public Cart(String cartCode, LocalDateTime orderDateTime, User user) {
+    public Cart(String cartCode, String orderDateTime, User user) {
         this.cartCode = cartCode;
         this.orderDateTime = orderDateTime;
         this.user = user;
@@ -36,11 +36,11 @@ public class Cart {
         this.cartCode = cartCode;
     }
 
-    public LocalDateTime getOrderDateTime() {
+    public String getOrderDateTime() {
         return orderDateTime;
     }
 
-    public void setOrderDateTime(LocalDateTime orderDateTime) {
+    public void setOrderDateTime(String orderDateTime) {
         this.orderDateTime = orderDateTime;
     }
 

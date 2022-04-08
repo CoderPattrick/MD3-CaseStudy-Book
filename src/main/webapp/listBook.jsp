@@ -64,6 +64,7 @@
             <td>
                 <a href="/BookServlet?action=getDetailsBook&id=${book.getId()}">Chi tiết</a>
             </td>
+
         </tr>
     </c:forEach>
 </table>
