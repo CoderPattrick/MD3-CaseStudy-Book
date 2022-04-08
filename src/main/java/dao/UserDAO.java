@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class UserDAO implements DAO<User> {
 
     public static final String SELECT_FROM_USERS_WHERE_ID = "SELECT *FROM users WHERE id=?";
+    public static final String FIND_LOGIN_USER = "select * from users where acc = ? and pass = ?;";
 
     @Override
     public ArrayList<User> getAll() throws SQLException {
@@ -49,5 +50,34 @@ public class UserDAO implements DAO<User> {
     @Override
     public boolean deleteRecord(int id) throws SQLException {
         return false;
+    }
+    public int checkRole(User user) throws SQLException{
+        int check = 0;
+        //0: not found
+        //1: customer
+        //2: admin
+        PreparedStatement pS = connection.prepareStatement(FIND_LOGIN_USER);
+        pS.setString(1, user.getAcc());
+        pS.setString(2, user.getPass());
+        ResultSet rS = pS.executeQuery();
+        while (rS.next()){
+            boolean role = rS.getBoolean("role");
+            if(role){
+                return 2;
+            }
+            return 1;
+        }
+        return check;
+    }
+    //test
+    public static void main(String[] args) throws SQLException {
+        PreparedStatement pS = connection.prepareStatement(FIND_LOGIN_USER);
+        pS.setString(1, "daat");
+        pS.setString(2, "admin");
+        ResultSet rS = pS.executeQuery();
+        while (rS.next()){
+            System.out.println(rS.getString(1));
+            System.out.println(rS.getString(2));
+        }
     }
 }
