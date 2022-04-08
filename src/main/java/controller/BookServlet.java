@@ -54,6 +54,8 @@ public class BookServlet extends HttpServlet {
                 case "deleteBookById2":
                     deleteBookById(request, response);
                     break;
+                case "getBooksByCategory":
+                    getBookByIdCategory(request,response);
                 //AUTHOR
                 case "getAllAuthor":
                     showAuthorListForm(request, response);
@@ -407,7 +409,13 @@ public class BookServlet extends HttpServlet {
         req.setAttribute("book",book);
         rD.forward(req,resp);
     }
-
+    public void getBookByIdCategory (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("BooksByCategory.jsp");
+        int id  =Integer.parseInt(request.getParameter("id"));
+        ArrayList<Book> books = bookDAO.getBookByIdCategory(id);
+        request.setAttribute("books",books);
+        dispatcher.forward(request,response);
+    }
 }
 
 
