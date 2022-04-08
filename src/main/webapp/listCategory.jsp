@@ -14,7 +14,7 @@
 <body>
 <h2>List Category</h2>
 <h2>
-    <a href="/author?action=createCategory">Add new Category</a>
+    <a href="/BookServlet?action=createCategory">Add new Category</a>
 </h2>
 <table border="1">
     <tr>
@@ -23,10 +23,14 @@
     </tr>
     <c:forEach items="${listCategory}" var="category">
         <tr>
-            <td>${category.name}</td>
             <td>
-                <a href="/author?action=editCategory&id=${category.id}">Edit</a>
+                <a href="/BookServlet?action=getBooksByCategory&id=${category.getId()}"> ${category.getName()}</a>
+
             </td>
+            <td>
+                <a href="/BookServlet?action=editCategory&id=${category.id}">Edit</a>
+
+          </td>
         </tr>
     </c:forEach>
 </table>

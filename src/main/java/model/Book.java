@@ -1,13 +1,14 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
     private int id ;
     private long ISBNCode;
     private String name;
-    private List<Category> categoryList;
-    private List<Author> authorList;
+    private ArrayList<Category> categoryList;
+    private ArrayList<Author> authorList;
     private int publishYear;
     private int reprint;
     private  String summary;
@@ -24,7 +25,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(long ISBNCode, String name, List<Category> categoryList, List<Author> authorList, int publishYear, int reprint, String summary, String publisher, String publishLicense, String avatarURL, int viewCount, boolean isRecommended, boolean isBestSeller, double price, int soldQuantity, int inStock) {
+    public Book(long ISBNCode, String name, ArrayList<Category> categoryList, ArrayList<Author> authorList, int publishYear, int reprint, String summary, String publisher, String publishLicense, String avatarURL, int viewCount, boolean isRecommended, boolean isBestSeller, double price, int soldQuantity, int inStock) {
         this.ISBNCode = ISBNCode;
         this.name = name;
         this.categoryList = categoryList;
@@ -43,7 +44,7 @@ public class Book {
         this.inStock = inStock;
     }
 
-    public Book(int id, long ISBNCode, String name, List<Category> categoryList, List<Author> authorList, int publishYear, int reprint, String summary, String publisher, String publishLicense, String avatarURL, int viewCount, boolean isRecommended, boolean isBestSeller, double price, int soldQuantity, int inStock) {
+    public Book(int id, long ISBNCode, String name, ArrayList<Category> categoryList,ArrayList<Author> authorList, int publishYear, int reprint, String summary, String publisher, String publishLicense, String avatarURL, int viewCount, boolean isRecommended, boolean isBestSeller, double price, int soldQuantity, int inStock) {
         this.id = id;
         this.ISBNCode = ISBNCode;
         this.name = name;
@@ -87,19 +88,19 @@ public class Book {
         this.name = name;
     }
 
-    public List<Category> getCategoryList() {
+    public ArrayList<Category> getCategoryList() {
         return categoryList;
     }
 
-    public void setCategoryList(List<Category> categoryList) {
+    public void setCategoryList(ArrayList<Category> categoryList) {
         this.categoryList = categoryList;
     }
 
-    public List<Author> getAuthorList() {
+    public ArrayList<Author> getAuthorList() {
         return authorList;
     }
 
-    public void setAuthorList(List<Author> authorList) {
+    public void setAuthorList(ArrayList<Author> authorList) {
         this.authorList = authorList;
     }
 

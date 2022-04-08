@@ -29,7 +29,7 @@
                 </td>
             </tr>
             <tr>
-                <a href="author?action=getAllCategory">Back to category list</a>
+                <a href="BookServlet?action=getAllCategory">Back to category list</a>
             </tr>
 
         </table>
