@@ -52,6 +52,10 @@
             <td>${book2.getSoldQuantity()}</td>
             <td>${book2.getInStock()}</td>
             <td>${book2.getPrice()}</td>
+            <td>
+                <a href="/BookServlet?action=showEditBookForm&id=<c:out value='${book2.getId()}'/>">Edit</a>
+                <a href="/BookServlet?action=deleteBookById2&id=<c:out value='${book2.getId()}'/>">Delete</a>
+            </td>
         </tr>
     </c:forEach>
 </table>

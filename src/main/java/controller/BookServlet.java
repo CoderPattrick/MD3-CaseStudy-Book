@@ -493,6 +493,8 @@ public class BookServlet extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
         Book book = new Book(id, isbn, name, categoryArrayList, authorArrayList, publishYear, reprint, summary, price);
         bookDAO.editRecord(book);
+        RequestDispatcher dispatcher= request.getRequestDispatcher("admin/book/listBook.jsp");
+        dispatcher.forward(request,response);
     }
     public void getBookByIdCategory (HttpServletRequest request,HttpServletResponse response) throws SQLException, ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book/BooksByCategory.jsp");
