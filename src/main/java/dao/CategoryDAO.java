@@ -1,6 +1,7 @@
 package dao;
 
 import model.Author;
+import model.Book;
 import model.Category;
 
 import java.sql.Connection;
@@ -13,8 +14,10 @@ public class CategoryDAO implements DAO<Category> {
     public static final String getAllCategorySQL = "select * from theloai;";
     public static final String INSERT_CATEGORY = "insert into theloai(ten) value(?);";
     public static final String DELETE_CATEGORY = "delete from theloai where id = ?;";
-    public static final String EDIT_CATEGORY= "update theloai set ten = ? where id = ?";
+    public static final String DELETE_CATEGORY_BOOK = "delete from sach_theloai where idTheLoai = ?;";
+    public static final String EDIT_CATEGORY = "update theloai set ten = ? where id = ?";
     public static final String Get_By_ID = "SELECT *FROM tacgia WHERE id =?";
+
 
     @Override
     public ArrayList<Category> getAll() throws SQLException {
@@ -24,7 +27,7 @@ public class CategoryDAO implements DAO<Category> {
         while (rS.next()) {
             int id = rS.getInt("id");
             String name = rS.getString("ten");
-            list.add(new Category(id,name));
+            list.add(new Category(id, name));
         }
         return list;
     }
@@ -35,7 +38,7 @@ public class CategoryDAO implements DAO<Category> {
         try (
                 PreparedStatement statement = connection.prepareStatement(Get_By_ID)
         ) {
-            statement.setInt(1,id);
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String name = resultSet.getString("ten");
@@ -59,32 +62,39 @@ public class CategoryDAO implements DAO<Category> {
     public boolean editRecord(Category category) throws SQLException {
         boolean rowUpdated;
         try (PreparedStatement statement = connection.prepareStatement(EDIT_CATEGORY);) {
+
             statement.setString(1, category.getName());
-            rowUpdated = statement.executeUpdate() > 0;
+            statement.setInt(2, category.getId());
+            rowUpdated = statement.execute();
         }
         return rowUpdated;
     }
 
+
     @Override
     public boolean deleteRecord(int id) throws SQLException {
-        boolean rowDelete;
-        PreparedStatement pS = connection.prepareStatement(DELETE_CATEGORY);
-        pS.setInt(1,id);
-        rowDelete = pS.executeUpdate() > 0;
-        return rowDelete;
+        PreparedStatement pS = connection.prepareStatement(DELETE_CATEGORY_BOOK);
+        PreparedStatement pS2 = connection.prepareStatement(DELETE_CATEGORY);
+
+        pS.setInt(1, id);
+        pS2.setInt(1, id);
+        pS.execute();
+        pS2.execute();
+
+        return true;
     }
 
-    public static ArrayList<Category> findAllByBookId(int id){
-        ArrayList<Category> categories =new ArrayList<>();
+    public static ArrayList<Category> findAllByBookId(int id) {
+        ArrayList<Category> categories = new ArrayList<>();
         try (
                 PreparedStatement statement = connection.prepareStatement("SELECT id, ten FROM theloai join sach_theloai st on theloai.id = st.idTheLoai where idSach =?;");
-        ){
-            statement.setInt(1,id);
-            ResultSet resultSet =statement.executeQuery();
-            while (resultSet.next()){
+        ) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
                 int idC = resultSet.getInt("id");
                 String name = resultSet.getString("ten");
-                categories.add(new Category(idC,name));
+                categories.add(new Category(idC, name));
             }
 
         } catch (SQLException e) {
@@ -93,3 +103,4 @@ public class CategoryDAO implements DAO<Category> {
         return categories;
     }
 }
+

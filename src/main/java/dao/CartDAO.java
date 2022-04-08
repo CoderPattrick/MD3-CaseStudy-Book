@@ -3,6 +3,8 @@ package dao;
 import model.Author;
 import model.Cart;
 import model.User;
+import model.*;
+
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -41,6 +41,8 @@ public class Author {
         this.avatarURL = avatarURL;
     }
 
+
+
     public int getId() {
         return id;
     }

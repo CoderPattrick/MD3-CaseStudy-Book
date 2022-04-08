@@ -11,15 +11,6 @@
 <head>
     <title>Book</title>
 </head>
-<script language="JavaScript">
-    function deleteBook(){
-        ${id}=${book.getId()}
-        ${action}="deleteBookById";
-        document.getElementById("submit").click();
-    }
-
-
-</script>
 <body>
 <h2>Book</h2>
 <form method="post">
@@ -56,7 +47,7 @@
             <td>${book.getSummary()}</td>
             <td>${book.getPrice()}</td>
             <td>
-                <a href="/BookServlet?action=editBookById&id=<c:out value='${book.getId()}' />">Edit</a>
+                <a href="/BookServlet?action=showEditBookForm&id=<c:out value='${book.getId()}'/>">Edit</a>
                 &nbsp;&nbsp;
                 <a href="/BookServlet?action=deleteBookById2&id=<c:out value='${book.getId()}'/>">Delete</a>
         </tr>

@@ -17,6 +17,9 @@ public class Cart {
     public Cart() {
     }
 
+    public Cart(String cartCode, LocalDateTime orderDate) {
+    }
+
     public int getId() {
         return id;
     }

@@ -13,15 +13,24 @@
 </head>
 <body>
 <h2>List Category</h2>
+<h2>
+    <a href="/BookServlet?action=createCategory">Add new Category</a>
+</h2>
 <table border="1">
     <tr>
         <th>Category</th>
+        <th>Action</th>
     </tr>
     <c:forEach items="${listCategory}" var="category">
         <tr>
             <td>
-                    <a href="/BookServlet?action=getBooksByCategory&id=${category.getId()}"> ${category.getName()}</a>
+                <a href="/BookServlet?action=getBooksByCategory&id=${category.getId()}"> ${category.getName()}</a>
+
             </td>
+            <td>
+                <a href="/BookServlet?action=editCategory&id=${category.id}">Edit</a>
+
+          </td>
         </tr>
     </c:forEach>
 </table>
