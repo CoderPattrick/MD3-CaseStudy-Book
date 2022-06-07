@@ -68,5 +68,6 @@
         </tr>
     </c:forEach>
 </table>
+<a href="/BookServlet?action=getNewBook">Add new Book</a>
 </body>
 </html>
